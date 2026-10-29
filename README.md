@@ -31,7 +31,7 @@ index.html           page unique
 assets/css/style.css styles et animations
 assets/js/main.js    interactions (démos courses et foyer, scrollytelling, terminal)
 assets/fonts/        Fraunces et Inter (SIL Open Font License 1.1)
-assets/favicon.svg   logo
+assets/logo.svg      logo (rat cuisinier, repris de l'application)
 ```
 
 ## Licences
