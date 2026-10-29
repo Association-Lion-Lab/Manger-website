@@ -36,7 +36,7 @@
 
   /* ---------- Mot qui tourne dans le hero ---------- */
   const word = $('.rotator__word');
-  const words = ['recettes', 'sorties', 'dates', 'invités', 'courses'];
+  const words = ['recettes', 'sorties', 'dates', 'invités', 'restes', 'courses'];
   let wordIndex = 0;
   if (word && !reduceMotion) {
     setInterval(() => {
@@ -184,10 +184,10 @@
 
   /* ---------- Démo : foyer mixte ---------- */
   const diets = [
-    { id: 'vegan', label: 'Végane', allowed: ['plant'] },
-    { id: 'vegetarian', label: 'Végétarien·ne', allowed: ['plant', 'egg'] },
-    { id: 'pescetarian', label: 'Pescétarien·ne', allowed: ['plant', 'egg', 'fish'] },
-    { id: 'omnivore', label: 'Omnivore', allowed: ['plant', 'egg', 'fish', 'meat'] }
+    { id: 'vegan', label: '🌱 J\'aime les graines', allowed: ['plant'] },
+    { id: 'vegetarian', label: '🥚 Veggie cool', allowed: ['plant', 'egg'] },
+    { id: 'pescetarian', label: '🐟 Team océan', allowed: ['plant', 'egg', 'fish'] },
+    { id: 'omnivore', label: '🍗 Je mange de tout', allowed: ['plant', 'egg', 'fish', 'meat'] }
   ];
   const proteins = [
     { name: 'Tofu fumé', category: 'plant' }, { name: 'Tempeh', category: 'plant' }, { name: 'Tofu', category: 'plant' },
@@ -247,7 +247,7 @@
 
   /* ---------- Terminal : saisie animée ---------- */
   const term = $('#term');
-  const commands = 'git clone https://codeberg.org/LION_LAB/manger.git\ncd manger\ndocker compose up -d --build';
+  const commands = 'git clone -b development https://codeberg.org/LION_LAB/manger.git\ncd manger\ndocker compose up -d --build\ndocker compose exec manger node accounts.js create-admin admin';
   $('#copy-cmd').addEventListener('click', event => copy(commands, event.currentTarget));
 
   if (term && !reduceMotion) {

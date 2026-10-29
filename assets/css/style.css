@@ -514,14 +514,14 @@ body::before {
 .terminal__bar span { margin-left: 10px; font-size: .8rem; color: #8c857b; }
 .terminal__copy { margin-left: auto; background: rgb(255 255 255 / .08); color: #f7f1e7; border: 0; border-radius: 8px; padding: 6px 12px; font: 600 .78rem var(--sans); cursor: pointer; transition: background .2s; }
 .terminal__copy:hover { background: rgb(255 255 255 / .16); }
-.terminal__body { margin: 0; padding: 24px 26px 30px; color: #f7f1e7; font: .92rem/1.75 ui-monospace, "SF Mono", Menlo, Consolas, monospace; overflow-x: auto; min-height: 260px; }
+.terminal__body { margin: 0; padding: 24px 26px 30px; color: #f7f1e7; font: .82rem/1.75 ui-monospace, "SF Mono", Menlo, Consolas, monospace; overflow-x: auto; min-height: 260px; }
 .terminal__body code { background: none; color: inherit; padding: 0; font-size: inherit; }
 .terminal__body .c { color: #8c857b; }
 .terminal__body .p { color: #f2c063; user-select: none; }
 .terminal__body .ok { color: #6fd0a7; }
 .caret { display: inline-block; width: .6em; height: 1.1em; background: #f7f1e7; vertical-align: -.2em; animation: blink 1s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
-@media (max-width: 900px) { .install__grid { grid-template-columns: 1fr; } .terminal__body { font-size: .8rem; padding: 20px; } }
+@media (max-width: 900px) { .install__grid { grid-template-columns: 1fr; } .terminal__body { font-size: .74rem; padding: 20px; white-space: pre-wrap; overflow-wrap: anywhere; } }
 
 /* Roadmap */
 .roadmap__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 60px; align-items: start; }
@@ -572,6 +572,34 @@ body::before {
 .footer__inner { display: grid; gap: 12px; justify-items: center; text-align: center; }
 .footer .logo { color: var(--text); }
 .footer__small { font-size: .82rem; opacity: .8; }
+
+/* Maquette : logo et onglets */
+.app-head__logo { width: 34px; height: 34px; border-radius: 10px; }
+.meal__day { line-height: 1.15; }
+.app-tabs { margin: auto -16px -16px; display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; border-top: 1px solid #dce5dc; padding: 8px 4px 14px; }
+.app-tabs span { display: grid; justify-items: center; gap: 2px; font-size: .6rem; font-weight: 600; color: #56645a; position: relative; }
+.app-tabs i { font-style: normal; font-size: 1rem; filter: grayscale(1); opacity: .7; }
+.app-tabs .is-on { color: #1b6b4a; }
+.app-tabs .is-on i { filter: none; opacity: 1; }
+.app-tabs b { position: absolute; top: -4px; right: 14%; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 9px; background: #1b6b4a; color: #fff; font-size: .58rem; display: grid; place-items: center; }
+
+/* Et aussi */
+.tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 60px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; transition: transform .5s var(--ease), box-shadow .5s var(--ease), opacity .9s var(--ease); }
+.tile:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+.tile__icon { font-size: 1.6rem; width: 54px; height: 54px; display: grid; place-items: center; border-radius: 16px; background: var(--accent-soft); }
+.tile h3 { font-family: var(--serif); font-size: 1.35rem; font-weight: 600; margin: 18px 0 8px; }
+.tile p { color: var(--muted); font-size: .97rem; }
+@media (max-width: 900px) { .tiles { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .tiles { grid-template-columns: 1fr; } }
+
+/* Encart sécurité */
+.callout { margin-top: 26px; padding: 16px 18px; border-radius: 16px; background: rgb(0 0 0 / .22); border: 1px solid rgb(255 255 255 / .18); font-size: .95rem; color: rgb(255 255 255 / .9); }
+.callout strong { color: #ffe0a8; display: block; margin-bottom: 2px; }
+
+.badge--6 { background: var(--surface); color: var(--text); border: 1px solid var(--line); top: 74%; left: 52%; rotate: 7deg; animation-delay: -3s; }
+.timeline .is-later { color: var(--muted); }
+.timeline .is-later span { border-style: dashed; }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {

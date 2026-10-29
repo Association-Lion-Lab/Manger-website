@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Manger! — On mange quoi cette semaine ?</title>
-  <meta name="description" content="Manger! est un planificateur de repas libre et auto-hébergeable : recettes, sorties, dates et liste de courses dans un même calendrier. Vos données restent chez vous.">
+  <meta name="description" content="Manger! est un planificateur de repas libre et auto-hébergeable : recettes, planning du foyer, assiettes adaptées à chacun, sorties, placard anti-gaspi et courses partagées. Vos données restent chez vous.">
   <meta name="theme-color" content="#f7f8f3" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#111113" media="(prefers-color-scheme: dark)">
   <meta property="og:title" content="Manger! — On mange quoi cette semaine ?">
@@ -29,6 +29,7 @@
         <a href="#demarche">La démarche</a>
         <a href="#fonctions">Fonctions</a>
         <a href="#foyer">Foyer</a>
+        <a href="#placard">Anti-gaspi</a>
         <a href="#installer">Installer</a>
         <a href="#asso">L'asso</a>
       </nav>
@@ -65,14 +66,14 @@
             <a class="btn btn--ghost" href="#demarche">Pourquoi un de plus ?</a>
           </div>
           <ul class="hero__facts reveal" aria-label="En bref">
-            <li><strong>0</strong> dépendance npm</li>
-            <li><strong>1</strong> commande Docker</li>
-            <li><strong>100 %</strong> vos données</li>
+            <li><strong>100</strong> recettes au catalogue</li>
+            <li><strong>4</strong> régimes à table</li>
+            <li><strong>0</strong> traceur</li>
           </ul>
         </div>
 
-        <!-- Phone mockup -->
-        <div class="hero__visual reveal" aria-label="Aperçu de l'application : le calendrier de la semaine">
+        <!-- Maquette du téléphone -->
+        <div class="hero__visual reveal" aria-label="Aperçu de l'application : le planning de la semaine">
           <div class="phone" data-tilt>
             <div class="phone__notch"></div>
             <div class="phone__screen">
@@ -81,45 +82,47 @@
                   <p class="app-head__kicker">Semaine 44</p>
                   <p class="app-head__title">Manger<em>!</em></p>
                 </div>
-                <span class="app-head__avatar">4</span>
+                <img class="app-head__logo" src="assets/logo.svg" alt="" width="34" height="34">
               </div>
               <div class="app-days">
                 <span>L</span><span>M</span><span class="is-today">M</span><span>J</span><span>V</span><span>S</span><span>D</span>
               </div>
               <ol class="app-week">
                 <li class="meal meal--home" style="--i:0">
-                  <span class="meal__day">Lun.</span>
-                  <span class="meal__body"><b>Curry coco</b><small>Maison · 35 min · 2 pers.</small></span>
+                  <span class="meal__day">Lun.<br>soir</span>
+                  <span class="meal__body"><b>Curry coco</b><small>Maison · 35 min · 4 pers.</small></span>
                   <span class="meal__tag">🍛</span>
                 </li>
                 <li class="meal meal--home" style="--i:1">
-                  <span class="meal__day">Mar.</span>
-                  <span class="meal__body"><b>Bowl pois chiches</b><small>Maison · 20 min · rapide</small></span>
-                  <span class="meal__tag">🥗</span>
+                  <span class="meal__day">Mar.<br>midi</span>
+                  <span class="meal__body"><b>Restes de curry</b><small>2 portions · déjà acheté</small></span>
+                  <span class="meal__tag">♻️</span>
                 </li>
                 <li class="meal meal--out" style="--i:2">
-                  <span class="meal__day">Mer.</span>
-                  <span class="meal__body"><b>Pizzeria du coin</b><small>Restaurant · avec les collègues</small></span>
+                  <span class="meal__day">Mer.<br>soir</span>
+                  <span class="meal__body"><b>Pizzeria du coin</b><small>Restaurant · 3 pers.</small></span>
                   <span class="meal__tag">🍕</span>
                 </li>
                 <li class="meal meal--date" style="--i:3">
-                  <span class="meal__day">Jeu.</span>
+                  <span class="meal__day">Jeu.<br>soir</span>
                   <span class="meal__body"><b>Gnocchis aux légumes</b><small>Date ♥ · à la maison</small></span>
                   <span class="meal__tag">🕯️</span>
                 </li>
                 <li class="meal meal--guests" style="--i:4">
-                  <span class="meal__day">Sam.</span>
+                  <span class="meal__day">Sam.<br>soir</span>
                   <span class="meal__body"><b>Bowl partagé</b><small>Invités · 6 pers. · 3 régimes</small></span>
                   <span class="meal__tag">🎉</span>
                 </li>
               </ol>
-              <div class="app-cart">
-                <span>🛒 Liste de courses</span>
-                <b><span data-count-to="14">0</span> articles</b>
-              </div>
+              <nav class="app-tabs" aria-hidden="true">
+                <span class="is-on"><i>📅</i>Semaine</span>
+                <span><i>📖</i>Recettes</span>
+                <span><i>🛒</i>Courses<b data-count-to="14">0</b></span>
+                <span><i>👤</i>Compte</span>
+              </nav>
             </div>
           </div>
-          <div class="sticker sticker--a">Sans IA<br>obligatoire</div>
+          <div class="sticker sticker--a">Sans IA<br>générative</div>
           <div class="sticker sticker--b">Zéro<br>pub</div>
           <div class="float-card float-card--a">
             <span class="float-card__icon">✓</span>
@@ -132,8 +135,8 @@
     <!-- MARQUEE -->
     <div class="marquee" aria-hidden="true">
       <div class="marquee__track">
-        <span>Auto-hébergé</span><i>✺</i><span>Sans pistage</span><i>✺</i><span>Sans abonnement</span><i>✺</i><span>Données exportables</span><i>✺</i><span>Pensé pour le téléphone</span><i>✺</i><span>Recettes privées par défaut</span><i>✺</i><span>Logiciel libre</span><i>✺</i>
-        <span>Auto-hébergé</span><i>✺</i><span>Sans pistage</span><i>✺</i><span>Sans abonnement</span><i>✺</i><span>Données exportables</span><i>✺</i><span>Pensé pour le téléphone</span><i>✺</i><span>Recettes privées par défaut</span><i>✺</i><span>Logiciel libre</span><i>✺</i>
+        <span>Auto-hébergé</span><i>✺</i><span>Sans pistage</span><i>✺</i><span>Sans abonnement</span><i>✺</i><span>Anti-gaspi</span><i>✺</i><span>Fonctionne hors connexion</span><i>✺</i><span>Pensé pour le téléphone</span><i>✺</i><span>Recettes du catalogue en CC0</span><i>✺</i><span>Logiciel libre</span><i>✺</i>
+        <span>Auto-hébergé</span><i>✺</i><span>Sans pistage</span><i>✺</i><span>Sans abonnement</span><i>✺</i><span>Anti-gaspi</span><i>✺</i><span>Fonctionne hors connexion</span><i>✺</i><span>Pensé pour le téléphone</span><i>✺</i><span>Recettes du catalogue en CC0</span><i>✺</i><span>Logiciel libre</span><i>✺</i>
       </div>
     </div>
 
@@ -160,11 +163,11 @@
           <div class="contrast__col contrast__col--us reveal">
             <h3>Ce que fait Manger!</h3>
             <ul>
-              <li>Une liste de courses <strong>neutre</strong>, à copier ou partager où vous voulez.</li>
-              <li>Une base SQLite <strong>sur votre machine</strong>. Personne d'autre ne la lit.</li>
+              <li>Une liste de courses <strong>neutre</strong>, à partager où vous voulez. Aucune enseigne, aucune commande.</li>
+              <li>Une base <strong>sur votre machine</strong>, SQLite ou PostgreSQL. Personne d'autre ne la lit.</li>
               <li><strong>Gratuit et libre</strong>, sous licence AGPL. Pour toujours.</li>
               <li>Des suggestions <strong>explicables</strong>, avec des règles écrites noir sur blanc.</li>
-              <li>Vos données tiennent dans <strong>un simple fichier SQLite</strong> : à sauvegarder, copier, emporter.</li>
+              <li>Tout est <strong>exportable</strong> : recettes en JSON, semaine en ICS, sauvegarde complète du foyer.</li>
             </ul>
           </div>
         </div>
@@ -173,32 +176,32 @@
           <article class="principle reveal" style="--d:0">
             <span class="principle__n">01</span>
             <h3>Chez vous</h3>
-            <p>Un conteneur Docker sur un Raspberry Pi, un NAS ou un petit VPS. Vous gardez la main sur le serveur et sur les sauvegardes.</p>
+            <p>Un conteneur Docker sur un mini-PC, un NAS ou un petit serveur. Vous gardez la main sur les données et sur les sauvegardes.</p>
           </article>
           <article class="principle reveal" style="--d:1">
             <span class="principle__n">02</span>
             <h3>Dans la poche</h3>
-            <p>Conçu d'abord pour le téléphone : on planifie dans le canapé, on coche la liste dans les rayons.</p>
+            <p>Conçu d'abord pour le téléphone, s'installe sur l'écran d'accueil. On planifie dans le canapé, on coche la liste dans les rayons, même sans réseau.</p>
           </article>
           <article class="principle reveal" style="--d:2">
             <span class="principle__n">03</span>
             <h3>Sans cloud imposé</h3>
-            <p>Aucune dépendance obligatoire à un service externe ni à une IA. L'application ne charge rien depuis l'extérieur : elle fonctionne sur votre réseau local, même sans Internet.</p>
+            <p>Polices, icônes et calculs sont locaux. L'import d'une recette par lien ou l'envoi d'un courriel ne se font que si vous les déclenchez ou les configurez.</p>
           </article>
           <article class="principle reveal" style="--d:3">
             <span class="principle__n">04</span>
             <h3>Transparent</h3>
-            <p>Si Manger! vous propose un plat, il sait vous dire pourquoi. Pas de boîte noire, pas d'algorithme d'engagement.</p>
+            <p>Si Manger! vous propose un plat, il sait vous dire pourquoi. Pas de boîte noire, pas d'algorithme d'engagement, pas d'IA générative.</p>
           </article>
           <article class="principle reveal" style="--d:4">
             <span class="principle__n">05</span>
             <h3>Privé par défaut</h3>
-            <p>Vos recettes de famille restent à vous. Rien n'est publié, partagé ou indexé sans votre décision.</p>
+            <p>Pas d'inscription publique ni de mot de passe par défaut : on entre dans le foyer sur invitation, et vos recettes de famille restent à vous.</p>
           </article>
           <article class="principle reveal" style="--d:5">
             <span class="principle__n">06</span>
-            <h3>Sobre</h3>
-            <p>Node.js et SQLite, zéro dépendance à installer. Moins de code, moins de mises à jour à surveiller, moins de surface d'attaque.</p>
+            <h3>Honnête</h3>
+            <p>La documentation dit ce qui est livré, ce qui ne l'est pas et ce qui n'a pas été testé. Aucun avis, note ou photo inventés.</p>
           </article>
         </div>
       </div>
@@ -209,30 +212,30 @@
       <div class="container">
         <p class="kicker reveal">Ce que ça fait</p>
         <h2 class="section__title reveal">Toute la vraie vie<br><em>tient dans la semaine.</em></h2>
-        <p class="section__lead reveal">Parce qu'on ne cuisine pas tous les soirs. Il y a le resto du mercredi, le dîner en amoureux, les potes qui débarquent samedi. Manger! planifie les repas comme ils se passent vraiment.</p>
+        <p class="section__lead reveal">Parce qu'on ne cuisine pas tous les soirs. Il y a le resto du mercredi, le dîner en amoureux, les restes du lendemain, les potes qui débarquent samedi. Manger! planifie les repas comme ils se passent vraiment.</p>
       </div>
 
       <div class="story container">
         <div class="story__steps">
           <article class="step" data-step="0">
             <span class="step__icon">📅</span>
-            <h3>Un calendrier, pas une to-do list</h3>
-            <p>Chaque repas a sa date, son moment de la journée, son nombre de personnes et une note si besoin. Glissez une recette, c'est planifié.</p>
+            <h3>Midi et soir, semaine après semaine</h3>
+            <p>Choisissez une recette pour un créneau, déplacez-la, copiez-la. Laissez Manger! composer les créneaux libres avec un aperçu modifiable, réutilisez une semaine ou l'une de vos semaines types.</p>
           </article>
           <article class="step" data-step="1">
             <span class="step__icon">🍽️</span>
             <h3>Maison, extérieur ou restaurant</h3>
-            <p>Un soir dehors n'est pas un trou dans le planning : c'est un repas. Notez-le, et Manger! n'ajoute rien à vos courses ce jour-là.</p>
+            <p>Un soir dehors n'est pas un trou dans le planning : c'est un repas. Notez le nom du restaurant, le nombre de personnes, c'est tout. Pas de carte, pas de géolocalisation, pas de compte chez un fournisseur.</p>
           </article>
           <article class="step" data-step="2">
             <span class="step__icon">🕯️</span>
-            <h3>Dates et invités</h3>
-            <p>Un date peut avoir lieu au restaurant ou autour d'un plat mijoté à la maison. L'occasion est une étiquette, pas une case fermée.</p>
+            <h3>Dates, invités et restes</h3>
+            <p>Un date au restaurant ou autour d'un plat mijoté, des invités autour d'une recette ou d'une commande. Et les restes se planifient : ingrédients achetés le jour où l'on cuisine, jamais comptés deux fois.</p>
           </article>
           <article class="step" data-step="3">
             <span class="step__icon">🛒</span>
             <h3>La liste de courses s'écrit toute seule</h3>
-            <p>Les ingrédients des recettes planifiées sont additionnés et regroupés. Cochez en magasin, copiez, partagez. Sans rien ressaisir.</p>
+            <p>Ingrédients additionnés, unités compatibles regroupées, rangés par rayon. Cochez en magasin, même hors connexion, partagez ce qu'il reste à acheter. Sans rien ressaisir.</p>
           </article>
         </div>
 
@@ -242,16 +245,16 @@
               <p class="stage__label">Mercredi 30</p>
               <div class="slot"><span>Midi</span><div class="chip chip--home">Bowl pois chiches · 2 pers.</div></div>
               <div class="slot"><span>Soir</span><div class="chip chip--home chip--drop">Curry coco · 4 pers.</div></div>
-              <div class="slot slot--empty"><span>Note</span><div class="chip chip--note">« Doubler le riz pour demain midi »</div></div>
+              <div class="slot slot--empty"><span>Jeudi</span><div class="chip chip--note">Menu proposé pour 5 créneaux libres · à valider</div></div>
             </div>
             <div class="stage__panel" data-panel="1">
               <p class="stage__label">Où mange-t-on ?</p>
               <div class="seg">
                 <button tabindex="-1">🏠 Maison</button>
-                <button tabindex="-1" class="is-on">🌳 Extérieur</button>
-                <button tabindex="-1">🍷 Restaurant</button>
+                <button tabindex="-1">🌳 Extérieur</button>
+                <button tabindex="-1" class="is-on">🍷 Restaurant</button>
               </div>
-              <div class="chip chip--out chip--big">Pique-nique au parc<small>0 ingrédient ajouté aux courses</small></div>
+              <div class="chip chip--out chip--big">Pizzeria du coin<small>3 personnes · aucun ingrédient ajouté aux courses</small></div>
             </div>
             <div class="stage__panel" data-panel="2">
               <p class="stage__label">Occasion</p>
@@ -264,14 +267,14 @@
               <div class="hearts"><i>♥</i><i>♥</i><i>♥</i><i>♥</i><i>♥</i></div>
             </div>
             <div class="stage__panel" data-panel="3">
-              <p class="stage__label">Courses · 3 recettes</p>
+              <p class="stage__label">Courses · rayon Fruits et légumes</p>
               <ul class="mini-list">
-                <li class="is-done"><span></span>Pois chiches <b>600 g</b></li>
                 <li class="is-done"><span></span>Tomates <b>×5</b></li>
-                <li><span></span>Lait de coco <b>20 cl</b></li>
-                <li><span></span>Riz <b>160 g</b></li>
+                <li class="is-done"><span></span>Citrons <b>×2</b></li>
                 <li><span></span>Courgettes <b>×2</b></li>
-                <li><span></span>Citrons <b>×2</b></li>
+                <li><span></span>Oignon rouge <b>×1</b></li>
+                <li><span></span>Pois chiches <b>600 g</b></li>
+                <li><span></span>Riz <b>160 g</b></li>
               </ul>
             </div>
           </div>
@@ -307,55 +310,96 @@
       <div class="container">
         <p class="kicker reveal">Foyers mixtes</p>
         <h2 class="section__title reveal">Une seule base.<br><em>Chacun sa protéine.</em></h2>
-        <p class="section__lead reveal">Végane, végétarien, pescétarien, omnivore autour de la même table ? Manger! enregistre le régime de chacun et ne propose que des protéines compatibles autour d'un plat commun. Ou coordonne deux recettes différentes le même soir.</p>
+        <p class="section__lead reveal">« J'aime les graines », « Veggie cool », « Team océan » ou « Je mange de tout » autour de la même table ? Manger! enregistre le régime et les goûts de chacun, puis ajoute à la base commune un supplément de protéine compatible pour chaque assiette. Ou prévoit une recette différente par personne, le même soir.</p>
 
         <div class="table-demo reveal">
           <div class="plate" aria-hidden="true">
             <div class="plate__ring">
               <span class="plate__emoji">🍚</span>
               <b>Bowl riz &amp; légumes rôtis</b>
-              <small>base commune · végane</small>
+              <small>base commune · végétale</small>
             </div>
           </div>
           <div class="diners" id="diners">
             <!-- rempli par JS -->
           </div>
         </div>
-        <p class="hint reveal">Touchez un régime pour le changer, ou une protéine pour en essayer une autre compatible.</p>
+        <p class="hint reveal">Touchez un régime pour le changer, ou une protéine pour en essayer une autre compatible. Les quantités suivent dans les courses.</p>
       </div>
     </section>
 
-    <!-- SUGGESTIONS -->
-    <section class="section reco" id="suggestions">
+    <!-- PLACARD + SUGGESTIONS -->
+    <section class="section reco" id="placard">
       <div class="container reco__grid">
         <div>
-          <p class="kicker reveal">Suggestions</p>
-          <h2 class="section__title reveal">Pas d'IA.<br><em>Du bon sens, écrit en clair.</em></h2>
-          <p class="section__lead reveal">Le classement des suggestions est déterministe : mêmes données, même résultat. Quatre règles, lisibles par tout le monde :</p>
+          <p class="kicker reveal">Anti-gaspi et suggestions</p>
+          <h2 class="section__title reveal">Le placard d'abord.<br><em>Du bon sens, écrit en clair.</em></h2>
+          <p class="section__lead reveal">Notez ce qu'il reste dans le placard, avec une date « à utiliser d'ici le » si vous voulez. Les courses déduisent ces stocks, et les suggestions les mettent en avant. Le classement n'utilise aucune IA : mêmes données, même résultat.</p>
           <ol class="rules">
-            <li class="reveal"><span>1</span><p>Favoriser les recettes qui <strong>réutilisent des ingrédients</strong> déjà prévus cette semaine.</p></li>
-            <li class="reveal"><span>2</span><p>Proposer les recettes <strong>jamais planifiées</strong> avant les répétitions.</p></li>
-            <li class="reveal"><span>3</span><p><strong>Pénaliser</strong> les plats mangés récemment.</p></li>
-            <li class="reveal"><span>4</span><p>Départager les égalités par <strong>ordre alphabétique</strong>. Oui, c'est tout.</p></li>
+            <li class="reveal"><span>1</span><p><strong>Filtres stricts</strong> : régime de chaque convive et temps disponible.</p></li>
+            <li class="reveal"><span>2</span><p>Les <strong>goûts</strong> des participants classent sans exclure : on sait toujours pourquoi un plat descend.</p></li>
+            <li class="reveal"><span>3</span><p>Un plat <strong>pas encore prévu</strong> cette semaine passe avant les doublons.</p></li>
+            <li class="reveal"><span>4</span><p>Priorité aux ingrédients du <strong>placard</strong>, surtout ceux à utiliser bientôt, puis à ceux <strong>déjà achetés</strong> pour la semaine.</p></li>
+            <li class="reveal"><span>5</span><p>Les plats <strong>jamais ou pas récemment mangés</strong> avant les autres, puis l'ordre alphabétique. Oui, c'est tout.</p></li>
           </ol>
         </div>
         <div class="reco__cards">
           <div class="sugg reveal" style="--d:0">
             <div class="sugg__top"><b>Taboulé pois chiches</b><span class="sugg__rank">#1</span></div>
             <div class="bar"><i style="--w:92%"></i></div>
-            <div class="why"><span class="why--plus">réutilise : pois chiches, tomate, citron</span><span class="why--plus">jamais planifié</span></div>
+            <div class="why"><span class="why--plus">placard : pois chiches · à utiliser bientôt</span><span class="why--plus">déjà acheté : tomate, citron</span></div>
           </div>
           <div class="sugg reveal" style="--d:1">
             <div class="sugg__top"><b>Gnocchis aux légumes</b><span class="sugg__rank">#2</span></div>
             <div class="bar"><i style="--w:64%"></i></div>
-            <div class="why"><span class="why--plus">jamais planifié</span></div>
+            <div class="why"><span class="why--plus">jamais cuisiné</span><span class="why--plus">pas encore prévu cette semaine</span></div>
           </div>
           <div class="sugg reveal" style="--d:2">
             <div class="sugg__top"><b>Curry coco</b><span class="sugg__rank">#3</span></div>
             <div class="bar"><i style="--w:30%"></i></div>
-            <div class="why"><span class="why--plus">réutilise : riz</span><span class="why--minus">mangé il y a 2 jours</span></div>
+            <div class="why"><span class="why--plus">déjà acheté : riz</span><span class="why--minus">moins adapté aux goûts de Sam</span></div>
           </div>
-          <p class="reco__note reveal">Les allergies, préférences et contraintes de matériel viendront enrichir ces règles, toujours de façon explicable.</p>
+          <p class="reco__note reveal">Un filtre « de saison » s'appuie sur le mois en cours et des calendriers de fruits et légumes (France métropolitaine, Bretagne, repères Hauts-de-France). Le sel, les huiles ou les épices ne comptent pas comme de l'anti-gaspi.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOUT LE RESTE -->
+    <section class="section more" id="plus">
+      <div class="container">
+        <p class="kicker reveal">Et aussi</p>
+        <h2 class="section__title reveal">Tout ce qu'il faut,<br><em>rien de ce qui gêne.</em></h2>
+        <div class="tiles">
+          <article class="tile reveal" style="--d:0">
+            <span class="tile__icon">📚</span>
+            <h3>100 recettes, 15 univers</h3>
+            <p>Un catalogue original à importer quand vous voulez : Express, Batch cooking, Plats mijotés, Doudou food, Italie, Inde, Japon… et les Recettes du rat, pour les petits budgets.</p>
+          </article>
+          <article class="tile reveal" style="--d:1">
+            <span class="tile__icon">⏱️</span>
+            <h3>Mode cuisine guidé</h3>
+            <p>Étapes numérotées, portions ajustables et un minuteur par étape chronométrée. Écran maintenu allumé si votre navigateur le permet.</p>
+          </article>
+          <article class="tile reveal" style="--d:2">
+            <span class="tile__icon">🔗</span>
+            <h3>Import par lien</h3>
+            <p>Collez l'adresse d'une recette publiée en ligne : Manger! lit ses données structurées et vous montre un aperçu avant de créer quoi que ce soit.</p>
+          </article>
+          <article class="tile reveal" style="--d:3">
+            <span class="tile__icon">👥</span>
+            <h3>Un foyer, plusieurs comptes</h3>
+            <p>Administrateur et membres, invitation privée valable 24 heures, déconnexion de tous les appareils. Les profils à table sont distincts des comptes.</p>
+          </article>
+          <article class="tile reveal" style="--d:4">
+            <span class="tile__icon">💾</span>
+            <h3>Sauvegarde et restauration</h3>
+            <p>Sauvegarde du foyer en un fichier, restauration avec aperçu et copie de récupération. SQLite par défaut, PostgreSQL pour les installations plus costaudes.</p>
+          </article>
+          <article class="tile reveal" style="--d:5">
+            <span class="tile__icon">🔒</span>
+            <h3>HTTPS local</h3>
+            <p>Optionnel, sans nom de domaine ni reverse proxy. L'administrateur partage le certificat public et son empreinte pour ajouter un iPhone.</p>
+          </article>
         </div>
       </div>
     </section>
@@ -365,13 +409,14 @@
       <div class="container install__grid">
         <div>
           <p class="kicker kicker--light reveal">Installer</p>
-          <h2 class="section__title reveal">Trois lignes.<br><em>Et c'est à table.</em></h2>
-          <p class="section__lead reveal">Sur votre serveur, NAS, Raspberry Pi ou simplement votre ordinateur. Le volume Docker <code>manger-data</code> conserve la base SQLite entre les mises à jour.</p>
+          <h2 class="section__title reveal">Quatre lignes.<br><em>Et c'est à table.</em></h2>
+          <p class="section__lead reveal">Sur un serveur, un NAS ou simplement votre ordinateur, avec Docker Engine et Compose. Le service écoute sur le port 3000 ; le volume <code>manger-data</code> conserve vos données entre les mises à jour.</p>
           <ul class="checks reveal">
-            <li>Docker et Docker Compose</li>
-            <li>Ou Node.js 24+, sans aucune dépendance à installer</li>
-            <li>Disponible ensuite sur <code>http://localhost:3000</code></li>
+            <li>Aucun mot de passe par défaut : la dernière commande crée le premier administrateur et affiche son mot de passe, à garder dans un gestionnaire.</li>
+            <li>HTTPS local optionnel, à configurer explicitement.</li>
+            <li>Mise à jour : sauvegardez d'abord, ne supprimez jamais les volumes.</li>
           </ul>
+          <p class="callout reveal"><strong>À garder sur un réseau de confiance.</strong> Manger! est fait pour le réseau local ou un VPN : ne l'exposez pas directement à Internet.</p>
         </div>
 
         <div class="terminal reveal">
@@ -381,13 +426,16 @@
             <button class="terminal__copy" type="button" id="copy-cmd" aria-label="Copier les commandes">Copier</button>
           </div>
           <pre class="terminal__body"><code id="term"><span class="c"># 1. Récupérer le code (dépôt principal sur Codeberg)</span>
-<span class="p">$</span> git clone https://codeberg.org/LION_LAB/manger.git
+<span class="p">$</span> git clone -b development https://codeberg.org/LION_LAB/manger.git
 <span class="p">$</span> cd manger
 
 <span class="c"># 2. Lancer</span>
 <span class="p">$</span> docker compose up -d --build
 
-<span class="ok">✓ Manger! écoute sur http://localhost:3000</span></code></pre>
+<span class="c"># 3. Créer le premier administrateur</span>
+<span class="p">$</span> docker compose exec manger node accounts.js create-admin admin
+
+<span class="ok">✓ Manger! écoute sur le port 3000</span></code></pre>
         </div>
       </div>
     </section>
@@ -397,27 +445,30 @@
       <div class="container">
         <p class="kicker reveal">Où on en est</p>
         <h2 class="section__title reveal">Honnête, <em>comme le reste.</em></h2>
-        <p class="section__lead reveal">Manger! est jeune et en développement actif. Le parcours de la version 0.1 fonctionne ; on préfère vous le dire franchement plutôt que de promettre la lune.</p>
+        <p class="section__lead reveal">Manger! est utilisé au quotidien et en développement actif. La documentation distingue ce qui est livré de ce qui ne l'est pas, et ce qui n'a pas encore été vérifié en conditions réelles.</p>
 
         <div class="roadmap__grid">
           <ol class="timeline">
-            <li class="is-done reveal"><span></span>Définition du MVP validée</li>
-            <li class="is-done reveal"><span></span>Maquette mobile du calendrier</li>
-            <li class="is-done reveal"><span></span>Choix de la stack</li>
-            <li class="is-done reveal"><span></span>Création et modification des recettes</li>
-            <li class="is-done reveal"><span></span>Parcours de validation 0.1 terminé</li>
-            <li class="is-next reveal"><span></span>Image Docker versionnée publiée</li>
+            <li class="is-done reveal"><span></span>Parcours de base : recettes, semaine, sorties, courses</li>
+            <li class="is-done reveal"><span></span>Foyers mixtes : régimes, goûts, protéines, restes</li>
+            <li class="is-done reveal"><span></span>Comptes, invitations, sauvegarde et restauration</li>
+            <li class="is-done reveal"><span></span>Catalogue de 100 recettes, placard anti-gaspi et saisons</li>
+            <li class="is-done reveal"><span></span>Hors connexion, HTTPS local, parcours validé sur iPhone</li>
+            <li class="is-done reveal"><span></span>PostgreSQL mis en service sur un réseau local</li>
+            <li class="is-next reveal"><span></span>Image Docker préconstruite publiée</li>
+            <li class="is-later reveal"><span></span>Interfaces tablette et ordinateur, plusieurs foyers par instance</li>
           </ol>
 
           <div class="notyet reveal">
-            <h3>Volontairement pas (encore) là</h3>
-            <p>Ces idées attendront que l'essentiel soit solide :</p>
+            <h3>Volontairement pas là</h3>
+            <p>Ces fonctions ne sont pas prévues, ou seulement bien plus tard :</p>
             <ul>
-              <li>Commande directe chez les grandes enseignes</li>
-              <li>Comparaison des prix en temps réel</li>
+              <li>Commande chez les enseignes</li>
+              <li>Réservation de restaurant</li>
+              <li>Coûts et prix calculés</li>
               <li>Réseau social de recettes</li>
-              <li>Génération de recettes par IA</li>
-              <li>Application mobile native</li>
+              <li>Recettes générées par IA</li>
+              <li>Application native</li>
               <li>Calcul nutritionnel avancé</li>
             </ul>
           </div>
@@ -450,7 +501,8 @@
             <span class="badge badge--2">Node.js</span>
             <span class="badge badge--3">SQLite</span>
             <span class="badge badge--4">Docker</span>
-            <span class="badge badge--5">0 dépendance</span>
+            <span class="badge badge--5">PostgreSQL</span>
+            <span class="badge badge--6">Recettes CC0</span>
           </div>
         </div>
       </div>
@@ -473,7 +525,7 @@
   <footer class="footer">
     <div class="container footer__inner">
       <a class="logo" href="#top"><img src="assets/logo.svg" alt="" width="30" height="30"><span>Manger<em>!</em></span></a>
-      <p>Planificateur de repas libre et auto-hébergeable · Code sous licence GNU AGPL-3.0-or-later · Une initiative de l'association Lion Lab.</p>
+      <p>Planificateur de repas libre et auto-hébergeable · Code sous licence GNU AGPL-3.0-or-later · Recettes originales du catalogue sous CC0-1.0 · Une initiative de l'association Lion Lab.</p>
       <p class="footer__small">Ce site n'utilise ni cookie, ni traceur, ni police ou script tiers. Évidemment.</p>
     </div>
   </footer>
