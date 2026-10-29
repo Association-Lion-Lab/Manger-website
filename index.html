@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manger! — On mange quoi cette semaine ?</title>
+  <meta name="description" content="Manger! est un planificateur de repas libre et auto-hébergeable : recettes, sorties, dates et liste de courses dans un même calendrier. Vos données restent chez vous.">
+  <meta name="theme-color" content="#f4f1ea" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="Manger! — On mange quoi cette semaine ?">
+  <meta property="og:description" content="Recettes, sorties et courses. Toute votre semaine à table. Libre, auto-hébergeable, sans pub et sans pistage.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/fraunces-latin-full-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <a class="skip" href="#contenu">Aller au contenu</a>
+
+  <header class="nav" id="nav">
+    <div class="nav__inner">
+      <a class="logo" href="#top" aria-label="Manger!, retour en haut">
+        <img src="assets/favicon.svg" alt="" width="32" height="32">
+        <span>Manger<em>!</em></span>
+      </a>
+      <nav class="nav__links" aria-label="Navigation principale">
+        <a href="#demarche">La démarche</a>
+        <a href="#fonctions">Fonctions</a>
+        <a href="#foyer">Foyer</a>
+        <a href="#installer">Installer</a>
+        <a href="#asso">L'asso</a>
+      </nav>
+      <a class="btn btn--small" href="https://codeberg.org/LION_LAB/manger" rel="noopener">Code source</a>
+    </div>
+  </header>
+
+  <main id="contenu">
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="hero__bg" aria-hidden="true">
+        <span class="blob blob--1"></span>
+        <span class="blob blob--2"></span>
+        <span class="blob blob--3"></span>
+      </div>
+
+      <div class="hero__inner">
+        <div class="hero__copy">
+          <p class="eyebrow reveal"><span class="dot"></span> Libre · Auto-hébergeable · AGPL-3.0</p>
+          <h1 class="hero__title reveal">
+            On mange quoi<br>cette <span class="scribble">semaine</span>&nbsp;?
+          </h1>
+          <p class="hero__lead reveal">
+            Toutes vos
+            <span class="rotator" aria-live="polite"><span class="rotator__word">recettes</span></span>
+            dans un seul calendrier.
+            <br>Chez vous. Sur votre serveur. Sans personne pour regarder dans votre assiette.
+          </p>
+          <div class="hero__cta reveal">
+            <a class="btn btn--primary" href="#installer">
+              Installer Manger!
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+            </a>
+            <a class="btn btn--ghost" href="#demarche">Pourquoi un de plus ?</a>
+          </div>
+          <ul class="hero__facts reveal" aria-label="En bref">
+            <li><strong>0</strong> dépendance npm</li>
+            <li><strong>1</strong> commande Docker</li>
+            <li><strong>100 %</strong> vos données</li>
+          </ul>
+        </div>
+
+        <!-- Phone mockup -->
+        <div class="hero__visual reveal" aria-label="Aperçu de l'application : le calendrier de la semaine">
+          <div class="phone" data-tilt>
+            <div class="phone__notch"></div>
+            <div class="phone__screen">
+              <div class="app-head">
+                <div>
+                  <p class="app-head__kicker">Semaine 44</p>
+                  <p class="app-head__title">Manger<em>!</em></p>
+                </div>
+                <span class="app-head__avatar">4</span>
+              </div>
+              <div class="app-days">
+                <span>L</span><span>M</span><span class="is-today">M</span><span>J</span><span>V</span><span>S</span><span>D</span>
+              </div>
+              <ol class="app-week">
+                <li class="meal meal--home" style="--i:0">
+                  <span class="meal__day">Lun.</span>
+                  <span class="meal__body"><b>Curry coco</b><small>Maison · 35 min · 2 pers.</small></span>
+                  <span class="meal__tag">🍛</span>
+                </li>
+                <li class="meal meal--home" style="--i:1">
+                  <span class="meal__day">Mar.</span>
+                  <span class="meal__body"><b>Bowl pois chiches</b><small>Maison · 20 min · rapide</small></span>
+                  <span class="meal__tag">🥗</span>
+                </li>
+                <li class="meal meal--out" style="--i:2">
+                  <span class="meal__day">Mer.</span>
+                  <span class="meal__body"><b>Pizzeria du coin</b><small>Restaurant · avec les collègues</small></span>
+                  <span class="meal__tag">🍕</span>
+                </li>
+                <li class="meal meal--date" style="--i:3">
+                  <span class="meal__day">Jeu.</span>
+                  <span class="meal__body"><b>Gnocchis aux légumes</b><small>Date ♥ · à la maison</small></span>
+                  <span class="meal__tag">🕯️</span>
+                </li>
+                <li class="meal meal--guests" style="--i:4">
+                  <span class="meal__day">Sam.</span>
+                  <span class="meal__body"><b>Bowl partagé</b><small>Invités · 6 pers. · 3 régimes</small></span>
+                  <span class="meal__tag">🎉</span>
+                </li>
+              </ol>
+              <div class="app-cart">
+                <span>🛒 Liste de courses</span>
+                <b><span data-count-to="14">0</span> articles</b>
+              </div>
+            </div>
+          </div>
+          <div class="sticker sticker--a">Sans IA<br>obligatoire</div>
+          <div class="sticker sticker--b">Zéro<br>pub</div>
+          <div class="float-card float-card--a">
+            <span class="float-card__icon">✓</span>
+            <span><b>Tomates ×5</b><small>regroupées depuis 2 recettes</small></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span>Auto-hébergé</span><i>✺</i><span>Sans pistage</span><i>✺</i><span>Sans abonnement</span><i>✺</i><span>Données exportables</span><i>✺</i><span>Pensé pour le téléphone</span><i>✺</i><span>Recettes privées par défaut</span><i>✺</i><span>Logiciel libre</span><i>✺</i>
+        <span>Auto-hébergé</span><i>✺</i><span>Sans pistage</span><i>✺</i><span>Sans abonnement</span><i>✺</i><span>Données exportables</span><i>✺</i><span>Pensé pour le téléphone</span><i>✺</i><span>Recettes privées par défaut</span><i>✺</i><span>Logiciel libre</span><i>✺</i>
+      </div>
+    </div>
+
+    <!-- DÉMARCHE -->
+    <section class="section demarche" id="demarche">
+      <div class="container">
+        <p class="kicker reveal">La démarche</p>
+        <h2 class="section__title reveal">Votre assiette n'est pas<br><em>un modèle économique.</em></h2>
+
+        <div class="contrast">
+          <div class="contrast__col contrast__col--them reveal">
+            <h3>Ce qu'on voit trop souvent</h3>
+            <ul>
+              <li>Des listes de courses qui poussent vers une enseigne partenaire.</li>
+              <li>Vos habitudes alimentaires analysées, revendues, ciblées.</li>
+              <li>Un abonnement pour débloquer… votre propre planning.</li>
+              <li>Des suggestions opaques dont personne ne sait expliquer l'ordre.</li>
+              <li>Vos recettes enfermées : le jour où le service ferme, elles disparaissent.</li>
+            </ul>
+          </div>
+          <div class="contrast__arrow reveal" aria-hidden="true">
+            <svg viewBox="0 0 120 40"><path d="M2 20c30-18 70 18 108 0m-12-10 12 10-12 10"/></svg>
+          </div>
+          <div class="contrast__col contrast__col--us reveal">
+            <h3>Ce que fait Manger!</h3>
+            <ul>
+              <li>Une liste de courses <strong>neutre</strong>, à copier ou partager où vous voulez.</li>
+              <li>Une base SQLite <strong>sur votre machine</strong>. Personne d'autre ne la lit.</li>
+              <li><strong>Gratuit et libre</strong>, sous licence AGPL. Pour toujours.</li>
+              <li>Des suggestions <strong>explicables</strong>, avec des règles écrites noir sur blanc.</li>
+              <li>Vos données tiennent dans <strong>un simple fichier SQLite</strong> : à sauvegarder, copier, emporter.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="principles">
+          <article class="principle reveal" style="--d:0">
+            <span class="principle__n">01</span>
+            <h3>Chez vous</h3>
+            <p>Un conteneur Docker sur un Raspberry Pi, un NAS ou un petit VPS. Vous gardez la main sur le serveur et sur les sauvegardes.</p>
+          </article>
+          <article class="principle reveal" style="--d:1">
+            <span class="principle__n">02</span>
+            <h3>Dans la poche</h3>
+            <p>Conçu d'abord pour le téléphone : on planifie dans le canapé, on coche la liste dans les rayons.</p>
+          </article>
+          <article class="principle reveal" style="--d:2">
+            <span class="principle__n">03</span>
+            <h3>Sans cloud imposé</h3>
+            <p>Aucune dépendance obligatoire à un service externe ni à une IA. L'application ne charge rien depuis l'extérieur : elle fonctionne sur votre réseau local, même sans Internet.</p>
+          </article>
+          <article class="principle reveal" style="--d:3">
+            <span class="principle__n">04</span>
+            <h3>Transparent</h3>
+            <p>Si Manger! vous propose un plat, il sait vous dire pourquoi. Pas de boîte noire, pas d'algorithme d'engagement.</p>
+          </article>
+          <article class="principle reveal" style="--d:4">
+            <span class="principle__n">05</span>
+            <h3>Privé par défaut</h3>
+            <p>Vos recettes de famille restent à vous. Rien n'est publié, partagé ou indexé sans votre décision.</p>
+          </article>
+          <article class="principle reveal" style="--d:5">
+            <span class="principle__n">06</span>
+            <h3>Sobre</h3>
+            <p>Node.js et SQLite, zéro dépendance à installer. Moins de code, moins de mises à jour à surveiller, moins de surface d'attaque.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FONCTIONS : scrollytelling -->
+    <section class="section features" id="fonctions">
+      <div class="container">
+        <p class="kicker reveal">Ce que ça fait</p>
+        <h2 class="section__title reveal">Toute la vraie vie<br><em>tient dans la semaine.</em></h2>
+        <p class="section__lead reveal">Parce qu'on ne cuisine pas tous les soirs. Il y a le resto du mercredi, le dîner en amoureux, les potes qui débarquent samedi. Manger! planifie les repas comme ils se passent vraiment.</p>
+      </div>
+
+      <div class="story container">
+        <div class="story__steps">
+          <article class="step" data-step="0">
+            <span class="step__icon">📅</span>
+            <h3>Un calendrier, pas une to-do list</h3>
+            <p>Chaque repas a sa date, son moment de la journée, son nombre de personnes et une note si besoin. Glissez une recette, c'est planifié.</p>
+          </article>
+          <article class="step" data-step="1">
+            <span class="step__icon">🍽️</span>
+            <h3>Maison, extérieur ou restaurant</h3>
+            <p>Un soir dehors n'est pas un trou dans le planning : c'est un repas. Notez-le, et Manger! n'ajoute rien à vos courses ce jour-là.</p>
+          </article>
+          <article class="step" data-step="2">
+            <span class="step__icon">🕯️</span>
+            <h3>Dates et invités</h3>
+            <p>Un date peut avoir lieu au restaurant ou autour d'un plat mijoté à la maison. L'occasion est une étiquette, pas une case fermée.</p>
+          </article>
+          <article class="step" data-step="3">
+            <span class="step__icon">🛒</span>
+            <h3>La liste de courses s'écrit toute seule</h3>
+            <p>Les ingrédients des recettes planifiées sont additionnés et regroupés. Cochez en magasin, copiez, partagez. Sans rien ressaisir.</p>
+          </article>
+        </div>
+
+        <div class="story__stage" aria-hidden="true">
+          <div class="stage">
+            <div class="stage__panel" data-panel="0">
+              <p class="stage__label">Mercredi 30</p>
+              <div class="slot"><span>Midi</span><div class="chip chip--home">Bowl pois chiches · 2 pers.</div></div>
+              <div class="slot"><span>Soir</span><div class="chip chip--home chip--drop">Curry coco · 4 pers.</div></div>
+              <div class="slot slot--empty"><span>Note</span><div class="chip chip--note">« Doubler le riz pour demain midi »</div></div>
+            </div>
+            <div class="stage__panel" data-panel="1">
+              <p class="stage__label">Où mange-t-on ?</p>
+              <div class="seg">
+                <button tabindex="-1">🏠 Maison</button>
+                <button tabindex="-1" class="is-on">🌳 Extérieur</button>
+                <button tabindex="-1">🍷 Restaurant</button>
+              </div>
+              <div class="chip chip--out chip--big">Pique-nique au parc<small>0 ingrédient ajouté aux courses</small></div>
+            </div>
+            <div class="stage__panel" data-panel="2">
+              <p class="stage__label">Occasion</p>
+              <div class="seg">
+                <button tabindex="-1">Ordinaire</button>
+                <button tabindex="-1" class="is-on is-date">♥ Date</button>
+                <button tabindex="-1">Invités</button>
+              </div>
+              <div class="chip chip--date chip--big">Gnocchis aux légumes<small>Jeudi soir · à la maison · bougies en option</small></div>
+              <div class="hearts"><i>♥</i><i>♥</i><i>♥</i><i>♥</i><i>♥</i></div>
+            </div>
+            <div class="stage__panel" data-panel="3">
+              <p class="stage__label">Courses · 3 recettes</p>
+              <ul class="mini-list">
+                <li class="is-done"><span></span>Pois chiches <b>600 g</b></li>
+                <li class="is-done"><span></span>Tomates <b>×5</b></li>
+                <li><span></span>Lait de coco <b>20 cl</b></li>
+                <li><span></span>Riz <b>160 g</b></li>
+                <li><span></span>Courgettes <b>×2</b></li>
+                <li><span></span>Citrons <b>×2</b></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COURSES : démo interactive -->
+    <section class="section courses" id="courses">
+      <div class="container courses__grid">
+        <div>
+          <p class="kicker reveal">Essayez</p>
+          <h2 class="section__title reveal">Cochez des repas.<br><em>Regardez la liste.</em></h2>
+          <p class="section__lead reveal">C'est le cœur de Manger! : planifier une fois, ne plus jamais recopier d'ingrédients. Les quantités communes s'additionnent automatiquement.</p>
+          <div class="recipes reveal" role="group" aria-label="Recettes à planifier">
+            <!-- rempli par JS -->
+          </div>
+        </div>
+        <div class="receipt reveal" aria-live="polite">
+          <div class="receipt__head">
+            <span>Liste de courses</span>
+            <span class="receipt__count"><b id="list-count">0</b> articles</span>
+          </div>
+          <ul class="receipt__list" id="shopping-list"></ul>
+          <p class="receipt__empty" id="list-empty">Planifiez un repas pour remplir la liste.</p>
+          <button class="btn btn--small btn--ghost receipt__copy" id="copy-list" type="button">Copier la liste</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOYER MIXTE -->
+    <section class="section foyer" id="foyer">
+      <div class="container">
+        <p class="kicker reveal">Foyers mixtes</p>
+        <h2 class="section__title reveal">Une seule base.<br><em>Chacun sa protéine.</em></h2>
+        <p class="section__lead reveal">Végane, végétarien, pescétarien, omnivore autour de la même table ? Manger! enregistre le régime de chacun et ne propose que des protéines compatibles autour d'un plat commun. Ou coordonne deux recettes différentes le même soir.</p>
+
+        <div class="table-demo reveal">
+          <div class="plate" aria-hidden="true">
+            <div class="plate__ring">
+              <span class="plate__emoji">🍚</span>
+              <b>Bowl riz &amp; légumes rôtis</b>
+              <small>base commune · végane</small>
+            </div>
+          </div>
+          <div class="diners" id="diners">
+            <!-- rempli par JS -->
+          </div>
+        </div>
+        <p class="hint reveal">Touchez un régime pour le changer, ou une protéine pour en essayer une autre compatible.</p>
+      </div>
+    </section>
+
+    <!-- SUGGESTIONS -->
+    <section class="section reco" id="suggestions">
+      <div class="container reco__grid">
+        <div>
+          <p class="kicker reveal">Suggestions</p>
+          <h2 class="section__title reveal">Pas d'IA.<br><em>Du bon sens, écrit en clair.</em></h2>
+          <p class="section__lead reveal">Le classement des suggestions est déterministe : mêmes données, même résultat. Quatre règles, lisibles par tout le monde :</p>
+          <ol class="rules">
+            <li class="reveal"><span>1</span><p>Favoriser les recettes qui <strong>réutilisent des ingrédients</strong> déjà prévus cette semaine.</p></li>
+            <li class="reveal"><span>2</span><p>Proposer les recettes <strong>jamais planifiées</strong> avant les répétitions.</p></li>
+            <li class="reveal"><span>3</span><p><strong>Pénaliser</strong> les plats mangés récemment.</p></li>
+            <li class="reveal"><span>4</span><p>Départager les égalités par <strong>ordre alphabétique</strong>. Oui, c'est tout.</p></li>
+          </ol>
+        </div>
+        <div class="reco__cards">
+          <div class="sugg reveal" style="--d:0">
+            <div class="sugg__top"><b>Taboulé pois chiches</b><span class="sugg__rank">#1</span></div>
+            <div class="bar"><i style="--w:92%"></i></div>
+            <div class="why"><span class="why--plus">réutilise : pois chiches, tomate, citron</span><span class="why--plus">jamais planifié</span></div>
+          </div>
+          <div class="sugg reveal" style="--d:1">
+            <div class="sugg__top"><b>Gnocchis aux légumes</b><span class="sugg__rank">#2</span></div>
+            <div class="bar"><i style="--w:64%"></i></div>
+            <div class="why"><span class="why--plus">jamais planifié</span></div>
+          </div>
+          <div class="sugg reveal" style="--d:2">
+            <div class="sugg__top"><b>Curry coco</b><span class="sugg__rank">#3</span></div>
+            <div class="bar"><i style="--w:30%"></i></div>
+            <div class="why"><span class="why--plus">réutilise : riz</span><span class="why--minus">mangé il y a 2 jours</span></div>
+          </div>
+          <p class="reco__note reveal">Les allergies, préférences et contraintes de matériel viendront enrichir ces règles, toujours de façon explicable.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- INSTALLER -->
+    <section class="section install" id="installer">
+      <div class="container install__grid">
+        <div>
+          <p class="kicker kicker--light reveal">Installer</p>
+          <h2 class="section__title reveal">Trois lignes.<br><em>Et c'est à table.</em></h2>
+          <p class="section__lead reveal">Sur votre serveur, NAS, Raspberry Pi ou simplement votre ordinateur. Le volume Docker <code>manger-data</code> conserve la base SQLite entre les mises à jour.</p>
+          <ul class="checks reveal">
+            <li>Docker et Docker Compose</li>
+            <li>Ou Node.js 24+, sans aucune dépendance à installer</li>
+            <li>Disponible ensuite sur <code>http://localhost:3000</code></li>
+          </ul>
+        </div>
+
+        <div class="terminal reveal">
+          <div class="terminal__bar">
+            <i></i><i></i><i></i>
+            <span>sur votre serveur</span>
+            <button class="terminal__copy" type="button" id="copy-cmd" aria-label="Copier les commandes">Copier</button>
+          </div>
+          <pre class="terminal__body"><code id="term"><span class="c"># 1. Récupérer le code (dépôt principal sur Codeberg)</span>
+<span class="p">$</span> git clone https://codeberg.org/LION_LAB/manger.git
+<span class="p">$</span> cd manger
+
+<span class="c"># 2. Lancer</span>
+<span class="p">$</span> docker compose up -d --build
+
+<span class="ok">✓ Manger! écoute sur http://localhost:3000</span></code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ÉTAT DU PROJET -->
+    <section class="section roadmap" id="feuille-de-route">
+      <div class="container">
+        <p class="kicker reveal">Où on en est</p>
+        <h2 class="section__title reveal">Honnête, <em>comme le reste.</em></h2>
+        <p class="section__lead reveal">Manger! est jeune et en développement actif. Le parcours de la version 0.1 fonctionne ; on préfère vous le dire franchement plutôt que de promettre la lune.</p>
+
+        <div class="roadmap__grid">
+          <ol class="timeline">
+            <li class="is-done reveal"><span></span>Définition du MVP validée</li>
+            <li class="is-done reveal"><span></span>Maquette mobile du calendrier</li>
+            <li class="is-done reveal"><span></span>Choix de la stack</li>
+            <li class="is-done reveal"><span></span>Création et modification des recettes</li>
+            <li class="is-done reveal"><span></span>Parcours de validation 0.1 terminé</li>
+            <li class="is-next reveal"><span></span>Image Docker versionnée publiée</li>
+          </ol>
+
+          <div class="notyet reveal">
+            <h3>Volontairement pas (encore) là</h3>
+            <p>Ces idées attendront que l'essentiel soit solide :</p>
+            <ul>
+              <li>Commande directe chez les grandes enseignes</li>
+              <li>Comparaison des prix en temps réel</li>
+              <li>Réseau social de recettes</li>
+              <li>Génération de recettes par IA</li>
+              <li>Application mobile native</li>
+              <li>Calcul nutritionnel avancé</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ASSO -->
+    <section class="section asso" id="asso">
+      <div class="container">
+        <div class="asso__card reveal">
+          <div class="asso__copy">
+            <p class="kicker">Porté par une association</p>
+            <h2 class="section__title">Lion Lab<em>.</em></h2>
+            <p>Manger! est développé par l'association <strong>Lion Lab</strong>, qui défend des outils numériques libres, sobres et respectueux de leurs utilisateurs. Pas d'investisseurs à rembourser, pas de données à monétiser : juste un outil utile, construit en commun.</p>
+            <p>Signalez un bug, proposez une recette libre, améliorez le code ou la documentation : toutes les contributions sont bienvenues.</p>
+            <div class="asso__cta">
+              <a class="btn btn--primary" href="https://codeberg.org/LION_LAB/manger" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true" class="ico-fill"><path d="M11.96 1.62A10.34 10.34 0 0 0 2.89 17.1l8.68-11.2c.2-.26.67-.26.87 0l3.88 5-1.5.12-2.83-3.64-6.88 8.88 1.13 1.47a10.34 10.34 0 0 0 15.85-12.5A10.33 10.33 0 0 0 11.96 1.62Zm6.66 16.07-2.35-3.03 2.19-.44 1.62 2.09c-.4.5-.89.98-1.46 1.38Z"/></svg>
+                Dépôt principal sur Codeberg
+              </a>
+              <a class="btn btn--ghost" href="https://github.com/Association-Lion-Lab/manger" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true" class="ico-fill"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>
+                Miroir GitHub
+              </a>
+            </div>
+          </div>
+          <div class="asso__badges" aria-hidden="true">
+            <span class="badge badge--1">AGPL-3.0</span>
+            <span class="badge badge--2">Node.js</span>
+            <span class="badge badge--3">SQLite</span>
+            <span class="badge badge--4">Docker</span>
+            <span class="badge badge--5">0 dépendance</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="final">
+      <div class="container">
+        <h2 class="final__title reveal">Alors, <span class="scribble">on mange quoi</span>&nbsp;?</h2>
+        <p class="final__lead reveal">Recettes, sorties et courses. Toute votre semaine à table.</p>
+        <div class="hero__cta hero__cta--center reveal">
+          <a class="btn btn--primary btn--big" href="#installer">Installer Manger!</a>
+          <a class="btn btn--ghost btn--big" href="https://codeberg.org/LION_LAB/manger" rel="noopener">Voir le code</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <a class="logo" href="#top"><img src="assets/favicon.svg" alt="" width="28" height="28"><span>Manger<em>!</em></span></a>
+      <p>Planificateur de repas libre et auto-hébergeable · Code sous licence GNU AGPL-3.0-or-later · Une initiative de l'association Lion Lab.</p>
+      <p class="footer__small">Ce site n'utilise ni cookie, ni traceur, ni police ou script tiers. Évidemment.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>
