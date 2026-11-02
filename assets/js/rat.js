@@ -3,22 +3,22 @@
    le pied reste posé au sol pendant l'appui, puis se lève et revient. */
 (() => {
   const NS = 'http://www.w3.org/2000/svg';
-  const GROUND = 640;
+  const GROUND = 612;
 
   // Corps allongé, dans l'esprit du logo (croupe ronde, touffes de poils au poitrail)
-  const BODY = 'M232,470 C196,380 250,262 390,246 C520,232 640,282 736,338 C786,368 814,398 818,422 L832,442 L808,448 L824,468 L796,472 L804,492 L774,486 C740,496 690,494 640,490 L600,500 L604,486 C560,488 520,500 488,520 C440,548 340,552 290,530 C258,516 240,496 232,470 Z';
-  const HAUNCH = 'M312,298 C412,318 462,428 424,524';
-  const SHOULDER = 'M690,372 C712,394 718,424 708,452';
+  const BODY = 'M196,430 C170,330 230,226 360,206 C470,190 600,222 690,282 C750,322 790,370 800,410 L816,440 L792,446 L806,470 L776,470 L782,492 L752,484 C700,504 630,508 580,502 L540,514 L546,498 L500,502 L456,516 L460,498 C360,512 260,500 222,472 C206,460 198,446 196,430 Z';
+  const HAUNCH = 'M262,262 C368,286 424,392 392,494';
+  const SHOULDER = 'M650,300 C686,330 698,372 688,414';
 
   // Pattes : longueurs en unités du logo
   const LEGS = [
-    { name: 'hind', far: true,  hip: [404, 474], a: 102, b: 116, phase: 0.5, knee: -1, paw: 98, w: [42, 22, 20] },
-    { name: 'front', far: true, hip: [728, 446], a: 108, b: 110, phase: 0.0, knee: 1, paw: 50, w: [34, 17, 16] },
-    { name: 'hind', far: false, hip: [404, 474], a: 102, b: 116, phase: 0.0, knee: -1, paw: 98, w: [42, 22, 20] },
-    { name: 'front', far: false, hip: [728, 446], a: 108, b: 110, phase: 0.5, knee: 1, paw: 50, w: [34, 17, 16] }
+    { name: 'hind', far: true,  hip: [372, 456], a: 94, b: 100, phase: 0.5, knee: -1, paw: 98, w: [42, 22, 20] },
+    { name: 'front', far: true, hip: [716, 446], a: 88, b: 90, phase: 0.0, knee: 1, paw: 50, w: [34, 17, 16] },
+    { name: 'hind', far: false, hip: [372, 456], a: 94, b: 100, phase: 0.0, knee: -1, paw: 98, w: [42, 22, 20] },
+    { name: 'front', far: false, hip: [716, 446], a: 88, b: 90, phase: 0.5, knee: 1, paw: 50, w: [34, 17, 16] }
   ];
 
-  const STRIDE = 220, LIFT = 64, DUTY = 0.55;
+  const STRIDE = 200, LIFT = 56, DUTY = 0.55;
   const VIEW = [-300, 118, 1500, 552];
 
   function foot(leg, t, amount) {
@@ -76,7 +76,7 @@
         <path d="${BODY}"/>
         <path class="rr-cut" d="${HAUNCH}"/>
         <path class="rr-cut" d="${SHOULDER}"/>
-        <g class="rr-head" transform="translate(828 440) rotate(14) scale(.66) translate(-752 -602)">
+        <g class="rr-head" transform="translate(790 458) rotate(32) scale(.62) translate(-752 -602)">
           <use href="#rb-body" clip-path="url(#rc-head)"/><use href="#rb-face"/>
         </g>
       </g>
@@ -112,7 +112,7 @@
         paw.setAttribute('d', pawPath(ankle, tilt, leg.paw, leg.w[2] / 2));
       });
       // Queue : part de la croupe, traîne derrière, ondule, et finit en crosse comme sur le logo
-      const n = 40, L = 540, base = [238, 470 + lift];
+      const n = 40, L = 560, base = [204, 452 + lift];
       const top = [], bottom = [];
       let x = base[0], y = base[1];
       for (let j = 0; j <= n; j++) {
