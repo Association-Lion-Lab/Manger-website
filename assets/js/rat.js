@@ -6,18 +6,20 @@
   const GROUND = 640;
 
   // Corps allongé, dans l'esprit du logo (croupe ronde, touffes de poils au poitrail)
-  const BODY = 'M196,440 C176,330 262,226 420,216 C540,210 640,250 740,306 C800,338 838,376 840,410 L852,436 L828,444 L846,468 L818,472 L826,496 L794,492 C750,512 680,520 610,516 L566,528 L572,510 L524,516 L478,528 L482,510 C380,522 286,520 240,494 C214,480 200,464 196,440 Z';
-  const HAUNCH = 'M300,286 C400,310 446,410 410,500';
+  const BODY = 'M232,470 C196,380 250,262 390,246 C520,232 640,282 736,338 C786,368 814,398 818,422 L832,442 L808,448 L824,468 L796,472 L804,492 L774,486 C740,496 690,494 640,490 L600,500 L604,486 C560,488 520,500 488,520 C440,548 340,552 290,530 C258,516 240,496 232,470 Z';
+  const HAUNCH = 'M312,298 C412,318 462,428 424,524';
+  const SHOULDER = 'M690,372 C712,394 718,424 708,452';
 
   // Pattes : longueurs en unités du logo
   const LEGS = [
-    { name: 'hind', far: true,  hip: [372, 456], a: 118, b: 132, phase: 0.5, knee: -1, paw: 100, w: [44, 24, 22] },
-    { name: 'front', far: true, hip: [720, 440], a: 118, b: 118, phase: 0.0, knee: 1, paw: 52, w: [40, 20, 18] },
-    { name: 'hind', far: false, hip: [372, 456], a: 118, b: 132, phase: 0.0, knee: -1, paw: 100, w: [44, 24, 22] },
-    { name: 'front', far: false, hip: [720, 440], a: 118, b: 118, phase: 0.5, knee: 1, paw: 52, w: [40, 20, 18] }
+    { name: 'hind', far: true,  hip: [404, 474], a: 102, b: 116, phase: 0.5, knee: -1, paw: 98, w: [42, 22, 20] },
+    { name: 'front', far: true, hip: [728, 446], a: 108, b: 110, phase: 0.0, knee: 1, paw: 50, w: [34, 17, 16] },
+    { name: 'hind', far: false, hip: [404, 474], a: 102, b: 116, phase: 0.0, knee: -1, paw: 98, w: [42, 22, 20] },
+    { name: 'front', far: false, hip: [728, 446], a: 108, b: 110, phase: 0.5, knee: 1, paw: 50, w: [34, 17, 16] }
   ];
 
-  const STRIDE = 230, LIFT = 70, DUTY = 0.55;
+  const STRIDE = 220, LIFT = 64, DUTY = 0.55;
+  const VIEW = [-300, 118, 1500, 552];
 
   function foot(leg, t, amount) {
     // Position du pied relative à la hanche, dans le repère sol
@@ -64,7 +66,7 @@
 
   function create(container, opts = {}) {
     const svg = document.createElementNS(NS, 'svg');
-    svg.setAttribute('viewBox', '-330 110 1560 570');
+    svg.setAttribute('viewBox', VIEW.join(' '));
     svg.setAttribute('class', 'runrat');
     svg.setAttribute('aria-hidden', 'true');
     svg.innerHTML = `
@@ -73,7 +75,8 @@
       <g class="rr-bob">
         <path d="${BODY}"/>
         <path class="rr-cut" d="${HAUNCH}"/>
-        <g class="rr-head" transform="translate(842 448) rotate(14) scale(.72) translate(-752 -602)">
+        <path class="rr-cut" d="${SHOULDER}"/>
+        <g class="rr-head" transform="translate(828 440) rotate(14) scale(.66) translate(-752 -602)">
           <use href="#rb-body" clip-path="url(#rc-head)"/><use href="#rb-face"/>
         </g>
       </g>
@@ -109,7 +112,7 @@
         paw.setAttribute('d', pawPath(ankle, tilt, leg.paw, leg.w[2] / 2));
       });
       // Queue : part de la croupe, traîne derrière, ondule, et finit en crosse comme sur le logo
-      const n = 40, L = 560, base = [204, 448 + lift];
+      const n = 40, L = 540, base = [238, 470 + lift];
       const top = [], bottom = [];
       let x = base[0], y = base[1];
       for (let j = 0; j <= n; j++) {
@@ -117,7 +120,7 @@
         const wave = Math.sin(u * 4 - t * Math.PI * 2) * 0.32 * u * (0.35 + 0.65 * amount);
         const theta = Math.PI - 0.12 + 2.7 * Math.pow(u, 2.6) + wave - (1 - amount) * 0.25 * u;
         if (j) { x += Math.cos(theta) * L / n; y += Math.sin(theta) * L / n; }
-        const w = 18 * (1 - u) + 5;
+        const w = 15 * (1 - u) + 4;
         const nx = -Math.sin(theta), ny = Math.cos(theta);
         top.push([x + nx * w / 2, y + ny * w / 2]); bottom.unshift([x - nx * w / 2, y - ny * w / 2]);
       }
@@ -142,7 +145,7 @@
     render();
     if (target) setRunning(true);
     // Vitesse d'avancée qui correspond aux foulées (en px/s pour un rat affiché sur `width` px)
-    const groundSpeed = width => STRIDE * (width / 1560) / (DUTY * period);
+    const groundSpeed = width => STRIDE * (width / VIEW[2]) / (DUTY * period);
     return { setRunning, groundSpeed, renderAt(phase, a = 1) { t = phase; amount = a; render(); } };
   }
 
