@@ -23,7 +23,7 @@
       stopTimer = setTimeout(() => {
         progress.classList.remove('is-moving');
         if (progressRat) progressRat.setRunning(false);
-      }, 160);
+      }, 350);
     }
     lastY = y;
   };

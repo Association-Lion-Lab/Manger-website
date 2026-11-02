@@ -39,20 +39,37 @@
   const lerp = (a, b, k) => a + (b - a) * k;
   const ease = k => 0.5 - 0.5 * Math.cos(Math.PI * k);
 
-  function sample(keys, p) {
-    p = ((p % 1) + 1) % 1;
+  // Spline d'Hermite (Catmull-Rom à pas variable) : la vitesse reste continue d'une pose
+  // clé à l'autre, sans marquer d'arrêt. `periodic` : la dernière clé rejoint la première.
+  // Sinon, vitesses imposées aux extrémités (v0, v1) ou estimées d'un seul côté.
+  function spline(keys, p, periodic = true, v0 = null, v1 = null) {
+    const n = keys.length;
+    if (periodic) p = ((p % 1) + 1) % 1;
+    else p = Math.max(keys[0][0], Math.min(keys[n - 1][0], p));
     let i = 0;
-    while (i < keys.length - 2 && p > keys[i + 1][0]) i++;
-    const [p0, ...v0] = keys[i], [p1, ...v1] = keys[i + 1];
-    const raw = (p - p0) / (p1 - p0 || 1);
-    const k = v0[v0.length - 1] === true ? raw : ease(raw);
-    return v0.filter(v => typeof v === 'number').map((v, j) => lerp(v, v1[j], k));
+    while (i < n - 2 && p > keys[i + 1][0]) i++;
+    const key = j => {
+      if (!periodic) return keys[Math.max(0, Math.min(n - 1, j))];
+      if (j < 0) { const k = keys[n - 1 + j]; return [k[0] - 1, ...k.slice(1)]; }
+      if (j > n - 1) { const k = keys[j - n + 1]; return [k[0] + 1, ...k.slice(1)]; }
+      return keys[j];
+    };
+    const tangent = j => {
+      if (!periodic && j === 0 && v0) return v0;
+      if (!periodic && j === n - 1 && v1) return v1;
+      const a = key(j - 1), b = key(j + 1), dt = b[0] - a[0] || 1;
+      return a.slice(1).map((v, k) => (b[k + 1] - v) / dt);
+    };
+    const A = keys[i], B = keys[i + 1], h = B[0] - A[0] || 1, u = (p - A[0]) / h;
+    const mA = tangent(i), mB = tangent(i + 1);
+    const h00 = 2 * u ** 3 - 3 * u ** 2 + 1, h10 = u ** 3 - 2 * u ** 2 + u, h01 = -2 * u ** 3 + 3 * u ** 2, h11 = u ** 3 - u ** 2;
+    return A.slice(1).map((v, k) => h00 * v + h10 * h * mA[k] + h01 * B[k + 1] + h11 * h * mB[k]);
   }
 
   // Épaisseur du corps le long de la colonne (0 = naissance de la queue, 1 = cou)
   const TOP = [[0, 13], [0.14, 44], [0.36, 76], [0.75, 66], [1, 46]];
   const BOTTOM = [[0, 13], [0.13, 36], [0.38, 58], [0.57, 62], [0.77, 58], [1, 42]];
-  const profile = (table, s) => sample(table.map(([p, v]) => [p, v]), Math.min(s, 0.9999))[0];
+  const profile = (table, s) => spline(table, s, false)[0];
 
   function spinePoint(s, arch) {
     const L = 570 * (1 - 0.12 * arch);
@@ -127,9 +144,9 @@
     const period = opts.period || 0.4;
 
     function render() {
-      const arch = lerp(0.15, sample(ARCH, t)[0], amount);
-      const lift = sample(LIFT, t)[0] * amount;
-      const pitch = sample(PITCH, t)[0] * amount * Math.PI / 180;
+      const arch = lerp(0.15, spline(ARCH, t)[0], amount);
+      const lift = spline(LIFT, t)[0] * amount;
+      const pitch = spline(PITCH, t)[0] * amount * Math.PI / 180;
       const cos = Math.cos(pitch), sin = Math.sin(pitch);
       const world = ([x, y]) => [490 + (x - 490) * cos - (y - 420) * sin, 420 + lift + (x - 490) * sin + (y - 420) * cos];
       const frame = s => {
@@ -190,8 +207,12 @@
           footAngle = lerp(lift[0], lift[1], k * k);
           heel = fromToe(lerp(toe[0], toe[1], k), footAngle);
         } else { // envol : positions clés du talon, cheville pliée
-          const keys = g.swing, q = p < from ? p + 1 : p;
-          const [hx, hy, fl] = sample(keys.map(([kp, ...v]) => [(kp - keys[0][0]) / (keys[keys.length - 1][0] - keys[0][0]), ...v]), (q - keys[0][0]) / (keys[keys.length - 1][0] - keys[0][0]));
+          const keys = g.swing, q = p < from ? p + 1 : p, span = to - from;
+          // vitesses du talon au décollage et à la pose, pour raccorder sans à-coup avec l'appui
+          const toeV = (toe[1] - toe[0]) / span, liftV = 2 * (lift[1] - lift[0]) / span;
+          const vOff = [toeV + F * Math.sin(lift[1]) * liftV, -F * Math.cos(lift[1]) * liftV, 0];
+          const vOn = [toeV, 0, 0];
+          const [hx, hy, fl] = spline(keys, q, false, vOff, vOn);
           heel = [hip[0] + hx, ground + hy];
           flex = fl;
         }
@@ -203,7 +224,7 @@
           const shin = Math.atan2(heel[1] - knee[1], heel[0] - knee[0]);
           // près du contact au sol, le pied se remet à plat pour rejoindre l'appui sans à-coup
           const q = p < from ? p + 1 : p, near = Math.min(Math.abs(q - to), Math.abs(from + 1 - q));
-          const k = Math.min(1, near / 0.07);
+          const k = Math.min(1, near / 0.1);
           const toGround = Math.abs(q - to) < Math.abs(from + 1 - q) ? lift[1] : lift[0];
           let free = shin + flex * Math.PI / 180;
           while (free - toGround > Math.PI) free -= 2 * Math.PI;
@@ -232,7 +253,7 @@
     function frameLoop(now) {
       const dt = Math.min((now - last) / 1000, 0.05);
       last = now;
-      amount += (target - amount) * Math.min(1, dt * 8);
+      amount += (target - amount) * Math.min(1, dt * 4);
       t = (t + dt / period * Math.max(amount, 0.0001)) % 1;
       render();
       if (Math.abs(target - amount) > 0.002 || target > 0) raf = requestAnimationFrame(frameLoop);
