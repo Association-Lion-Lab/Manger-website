@@ -20,8 +20,8 @@
       stand: [40, 0]
     },
     front: {
-      stance: { from: 0.12, to: 0.42, toe: [75, -65], lift: [0, 0.7] },
-      swing: [[0.42, -99, -28, -40], [0.55, -84, -52, -110], [0.75, 0, -62, -80], [0.9, 80, -54, -40], [1.0, 72, -38, -30], [1.12, 31, 0, -30]],
+      stance: { from: 0.12, to: 0.345, toe: [55, -50], lift: [0, 0.7] },
+      swing: [[0.345, -84, -28, -40], [0.48, -70, -50, -100], [0.68, 0, -58, -75], [0.88, 62, -50, -40], [1.0, 58, -30, -25], [1.12, 11, 0, -25]],
       stand: [30, 0]
     }
   };
@@ -31,9 +31,9 @@
 
   const LEGS = [
     { hind: true, far: true, s: 0.33, drop: 8, a: 92, b: 86, paw: 86, w: [46, 26, 24], dir: 1, offset: 0.04, gait: 'hind', mass: [96, 80, 34, [-2.5, -1.9, -1.2, -0.5]] },
-    { hind: false, far: true, s: 0.76, drop: 6, a: 80, b: 66, paw: 44, w: [36, 19, 17], dir: -1, offset: 0.07, gait: 'front', mass: [66, 50, 26, [0.7, 1.3, 1.9, 2.5]] },
+    { hind: false, far: true, s: 0.82, drop: 10, a: 78, b: 66, paw: 44, w: [36, 19, 17], dir: -1, offset: 0.07, gait: 'front', mass: [62, 48, 26, [0.7, 1.3, 1.9, 2.5]], follow: 0.45 },
     { hind: true, far: false, s: 0.33, drop: 8, a: 92, b: 86, paw: 86, w: [46, 26, 24], dir: 1, offset: 0, gait: 'hind', mass: [96, 80, 34, [-2.5, -1.9, -1.2, -0.5]] },
-    { hind: false, far: false, s: 0.76, drop: 6, a: 80, b: 66, paw: 44, w: [36, 19, 17], dir: -1, offset: 0, gait: 'front', mass: [66, 50, 26, [0.7, 1.3, 1.9, 2.5]] }
+    { hind: false, far: false, s: 0.82, drop: 10, a: 78, b: 66, paw: 44, w: [36, 19, 17], dir: -1, offset: 0, gait: 'front', mass: [62, 48, 26, [0.7, 1.3, 1.9, 2.5]], follow: 0.45 }
   ];
 
   const lerp = (a, b, k) => a + (b - a) * k;
@@ -240,7 +240,9 @@
         // Masse musculaire (croupe et cuisse à l'arrière, épaule et poitrail à l'avant) :
         // accrochée près de la colonne, elle pivote avec l'os du haut de la patte
         const [rx, ry, cx, cut] = leg.mass;
-        const fa = Math.atan2(knee[1] - hip[1], knee[0] - hip[0]), ca = Math.cos(fa), sa = Math.sin(fa);
+        // l'épaule suit le bras en partie seulement (l'omoplate bouge moins que la patte)
+        const bone = Math.atan2(knee[1] - hip[1], knee[0] - hip[0]);
+        const fa = Math.PI / 2 + (bone - Math.PI / 2) * (leg.follow ?? 1), ca = Math.cos(fa), sa = Math.sin(fa);
         const E = (th, k = 1) => [hip[0] + (cx + rx * k * Math.cos(th)) * ca - ry * k * Math.sin(th) * sa, hip[1] + (cx + rx * k * Math.cos(th)) * sa + ry * k * Math.sin(th) * ca];
         const ring = [];
         for (let j = 0; j < 18; j++) ring.push(E(j / 18 * Math.PI * 2));
