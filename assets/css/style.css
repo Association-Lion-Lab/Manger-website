@@ -623,12 +623,12 @@ body::before {
 .progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; opacity: 0; transition: opacity .3s; pointer-events: none; }
 .nav.is-scrolled .progress { opacity: 1; }
 .progress__bar { position: absolute; inset: 0; transform-origin: left; transform: scaleX(var(--p, 0)); background: linear-gradient(90deg, var(--accent), var(--mustard)); }
-.progress__rat { position: absolute; bottom: -1px; left: calc(var(--p, 0) * (100% - 106px)); width: 104px; height: 33px; color: var(--accent); --rat-cut: var(--background); }
+.progress__rat { position: absolute; bottom: -1px; left: calc(var(--p, 0) * (100% - 106px)); width: 106px; height: 32px; color: var(--accent); --rat-cut: var(--background); }
 .progress.is-back .progress__rat { transform: scaleX(-1); }
 
 /* Bandeau : traversée régulière */
 .marquee { position: relative; overflow-x: clip; overflow-y: visible; }
-.marquee__rat { position: absolute; z-index: 1; bottom: calc(100% - 4px); left: 0; width: 176px; height: 55px; color: var(--accent); --rat-cut: var(--background); transform: translateX(-200px); }
+.marquee__rat { position: absolute; z-index: 1; bottom: calc(100% - 4px); left: 0; width: 180px; height: 54px; color: var(--accent); --rat-cut: var(--background); transform: translateX(-200px); }
 
 /* Ticket de caisse : le rat perché */
 .receipt__rat { position: absolute; right: 22px; bottom: calc(100% - 4px); width: 58px; height: 54px; color: var(--accent); }
