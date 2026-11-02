@@ -603,21 +603,7 @@ body::before {
 /* ===== Le rat ===== */
 .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 .rat-svg { display: block; width: 100%; height: 100%; overflow: visible; }
-@keyframes ratSniff { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-6deg) translateY(-3%); } 40% { transform: rotate(-2deg); } 60% { transform: rotate(-7deg) translateY(-4%); } 80% { transform: rotate(-1deg); } }
-@keyframes ratJump { 0%, 100% { transform: translateY(0) scale(1, 1); } 15% { transform: translateY(0) scale(1.1, .85); } 45% { transform: translateY(-60%) scale(.95, 1.08) rotate(-8deg); } 75% { transform: translateY(0) scale(1.08, .9); } }
 
-/* Bulle */
-.bubble {
-  position: absolute; bottom: 100%; left: 50%; translate: -50% -6px;
-  background: var(--raised); color: var(--text); border: 1px solid var(--line);
-  font: 600 .82rem/1.2 var(--sans); white-space: nowrap;
-  padding: .5em .8em; border-radius: 12px; box-shadow: var(--shadow);
-  opacity: 0; transform: translateY(6px) scale(.9); transform-origin: bottom center;
-  transition: opacity .25s var(--ease), transform .35s var(--ease);
-  pointer-events: none;
-}
-.bubble::after { content: ""; position: absolute; top: 100%; left: 50%; translate: -50% -5px; width: 10px; height: 10px; background: inherit; border: inherit; border-width: 0 1px 1px 0; rotate: 45deg; }
-.bubble.is-on { opacity: 1; transform: none; }
 
 /* Progression : le rat suit la lecture */
 .progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; opacity: 0; transition: opacity .3s; pointer-events: none; }
@@ -633,9 +619,8 @@ body::before {
 /* Ticket de caisse : le rat perché */
 .receipt__rat { position: absolute; right: 22px; bottom: calc(100% - 4px); width: 58px; height: 54px; color: var(--accent); }
 .receipt__rat .rat-svg { transform-origin: 50% 100%; transform: scaleX(-1); }
-.receipt__rat > svg { animation: ratSniff 4s ease-in-out infinite; }
-.receipt__rat.is-jump > svg { animation: ratJump .6s var(--ease); }
-.receipt__rat .bubble { left: 0; }
+.receipt__rat .eyelid { fill: currentColor; transform-box: fill-box; transform-origin: center top; transform: scaleY(0); animation: blink 5s infinite; }
+@keyframes blink { 0%, 90%, 100% { transform: scaleY(0); } 92% { transform: scaleY(1); } 94% { transform: scaleY(0); } 96% { transform: scaleY(1); } 98% { transform: scaleY(0); } }
 
 @media (max-width: 600px) { .receipt__rat { width: 46px; height: 43px; } }
 

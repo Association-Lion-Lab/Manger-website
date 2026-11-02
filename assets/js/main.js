@@ -199,28 +199,11 @@
       });
       listRoot.append(item);
     });
-    if (previous.size || totals.size) ratReact(totals.size - previous.size);
     previous = new Map([...totals].map(([name, entry]) => [name, entry.amount]));
     countElement.textContent = totals.size;
     emptyHint.hidden = totals.size > 0;
   }
-  /* ---------- Le rat perché sur le ticket ---------- */
-  const receiptRat = $('#receipt-rat');
-  let receiptTimer;
-  function ratReact(delta) {
-    if (!receiptRat || !document.body.dataset.ready) return;
-    const bubble = $('.bubble', receiptRat);
-    bubble.textContent = delta > 0 ? `+${delta} sur la liste !` : delta < 0 ? 'Un plat de moins…' : 'Quantités mises à jour';
-    receiptRat.classList.remove('is-jump');
-    void receiptRat.offsetWidth;
-    receiptRat.classList.add('is-jump');
-    bubble.classList.add('is-on');
-    clearTimeout(receiptTimer);
-    receiptTimer = setTimeout(() => bubble.classList.remove('is-on'), 1600);
-  }
-
   renderList();
-  document.body.dataset.ready = '1';
 
   const flash = (button, label) => {
     const original = button.textContent;
