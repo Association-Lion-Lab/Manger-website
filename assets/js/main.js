@@ -8,6 +8,8 @@
   const progress = $('.progress');
   let lastY = scrollY;
   let stopTimer;
+  const makeRat = (el, running) => (window.MangerRat && el ? MangerRat.create(el, { running: running && !reduceMotion }) : null);
+  const progressRat = makeRat($('.progress__rat'), false);
   const onScroll = () => {
     const y = scrollY;
     const max = document.documentElement.scrollHeight - innerHeight;
@@ -16,8 +18,12 @@
     if (y !== lastY) {
       progress.classList.toggle('is-back', y < lastY);
       progress.classList.add('is-moving');
+      if (progressRat && !reduceMotion) progressRat.setRunning(true);
       clearTimeout(stopTimer);
-      stopTimer = setTimeout(() => progress.classList.remove('is-moving'), 160);
+      stopTimer = setTimeout(() => {
+        progress.classList.remove('is-moving');
+        if (progressRat) progressRat.setRunning(false);
+      }, 160);
     }
     lastY = y;
   };
@@ -33,6 +39,32 @@
     });
   }, { rootMargin: '-45% 0px -50% 0px' });
   navLinks.forEach(link => { const target = $(link.hash); if (target) sectionObserver.observe(target); });
+
+  // Rat du bandeau : traverse à la vitesse de ses foulées, seulement quand le bandeau est visible
+  const marqueeEl = $('.marquee__rat');
+  const marqueeRat = makeRat(marqueeEl, false);
+  if (marqueeRat && !reduceMotion) {
+    let visible = false, x = -200, pauseUntil = 0, last = 0, raf = 0;
+    const loop = now => {
+      const dt = last ? Math.min((now - last) / 1000, .05) : 0;
+      last = now;
+      const width = marqueeEl.offsetWidth;
+      if (now < pauseUntil) {
+        marqueeRat.setRunning(false);
+      } else {
+        marqueeRat.setRunning(true);
+        x += marqueeRat.groundSpeed(width) * dt;
+        if (x > innerWidth + 40) { x = -width - 40; pauseUntil = now + 9000; }
+      }
+      marqueeEl.style.transform = `translateX(${x.toFixed(1)}px)`;
+      raf = visible ? requestAnimationFrame(loop) : 0;
+    };
+    new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible && !raf) { last = 0; raf = requestAnimationFrame(loop); }
+      if (!visible) marqueeRat.setRunning(false);
+    }).observe($('.marquee'));
+  }
 
   /* ---------- Apparitions au scroll ---------- */
   const revealObserver = new IntersectionObserver(entries => {
