@@ -8,24 +8,32 @@
   const VIEW = [-320, 140, 1560, 470];
   const SPEED = 467; // avancée au sol par cycle, en unités du dessin
 
-  // Poses clés du galop : [phase, x relatif à la hanche, hauteur au-dessus du sol, angle du pied, appui linéaire ?]
-  const FRONT_KEYS = [
-    [0.00, 110, -46, -0.25], [0.12, 75, 0, 0, true], [0.42, -65, 0, 0.1],
-    [0.55, -70, -40, 1.1], [0.75, 10, -66, 0.9], [0.90, 100, -60, -0.1], [1.00, 110, -46, -0.25]
-  ];
-  const HIND_KEYS = [
-    [0.00, -150, -64, 2.7], [0.15, -110, -96, 2.2], [0.28, -10, -88, 1.2], [0.36, 70, -40, 0.3],
-    [0.42, 85, 0, 0, true], [0.75, -69, 0, 0.5], [0.85, -130, -36, 2.0], [1.00, -150, -64, 2.7]
-  ];
+  // Chaque patte est une chaîne articulée : hanche → genou → talon (ou poignet) → orteils.
+  // Appui : les orteils restent plantés et avancent à la vitesse du sol, le talon se soulève
+  // progressivement (lift, en radians) jusqu'à la poussée.
+  // Envol : le talon suit des positions clés [phase, x, y, flexion de la cheville en degrés] ;
+  // le pied prolonge alors la jambe, plié selon la cheville, ce qui garde la patte cohérente.
+  const GAIT = {
+    hind: {
+      stance: { from: 0.42, to: 0.75, toe: [85, -69], lift: [0, 1.0] },
+      swing: [[0.75, -115, -72, -20], [0.85, -150, -62, -12], [1.0, -146, -64, -20], [1.15, -96, -70, -55], [1.28, -20, -62, -95], [1.36, 18, -34, -105], [1.42, -1, 0, -110]],
+      stand: [40, 0]
+    },
+    front: {
+      stance: { from: 0.12, to: 0.42, toe: [75, -65], lift: [0, 0.7] },
+      swing: [[0.42, -99, -28, -40], [0.55, -84, -52, -110], [0.75, 0, -62, -80], [0.9, 80, -54, -40], [1.0, 72, -38, -30], [1.12, 31, 0, -30]],
+      stand: [30, 0]
+    }
+  };
   const ARCH = [[0, -0.25], [0.15, 0], [0.42, 1], [0.62, 0.6], [0.8, -0.15], [1, -0.25]];
   const LIFT = [[0, -34], [0.15, -4], [0.42, 6], [0.62, 0], [0.8, -24], [1, -34]];
   const PITCH = [[0, -2], [0.2, 7], [0.45, 1], [0.7, -6], [0.9, -4], [1, -2]];
 
   const LEGS = [
-    { hind: true, far: true, s: 0.37, drop: 34, a: 72, b: 84, paw: 86, w: [44, 22, 20], dir: -1, offset: 0.04 },
-    { hind: false, far: true, s: 0.8, drop: 28, a: 62, b: 66, paw: 44, w: [36, 17, 15], dir: 1, offset: 0.07 },
-    { hind: true, far: false, s: 0.37, drop: 34, a: 72, b: 84, paw: 86, w: [44, 22, 20], dir: -1, offset: 0 },
-    { hind: false, far: false, s: 0.8, drop: 28, a: 62, b: 66, paw: 44, w: [36, 17, 15], dir: 1, offset: 0 }
+    { hind: true, far: true, s: 0.37, drop: 34, a: 72, b: 84, paw: 86, w: [46, 26, 24], dir: -1, offset: 0.04, gait: 'hind' },
+    { hind: false, far: true, s: 0.8, drop: 28, a: 62, b: 66, paw: 44, w: [36, 19, 17], dir: 1, offset: 0.07, gait: 'front' },
+    { hind: true, far: false, s: 0.37, drop: 34, a: 72, b: 84, paw: 86, w: [46, 26, 24], dir: -1, offset: 0, gait: 'hind' },
+    { hind: false, far: false, s: 0.8, drop: 28, a: 62, b: 66, paw: 44, w: [36, 19, 17], dir: 1, offset: 0, gait: 'front' }
   ];
 
   const lerp = (a, b, k) => a + (b - a) * k;
@@ -170,16 +178,44 @@
       // Pattes
       LEGS.forEach((leg, i) => {
         const f = frame(leg.s), hip = at(f, 0, -leg.drop);
-        const [rx, ry, ra] = sample(leg.hind ? HIND_KEYS : FRONT_KEYS, t + leg.offset);
-        const fx = lerp(leg.hind ? 0 : 20, rx, amount), fy = ry * amount, fa = ra * amount;
-        const ankle = [hip[0] + fx, GROUND - (leg.hind ? 20 : 14) + fy];
-        const knee = ik(hip, ankle, leg.a, leg.b, leg.dir);
-        const [thigh, shin, paw] = legEls[i].children;
+        const g = GAIT[leg.gait], F = leg.paw, ground = GROUND - 6;
+        const fromToe = (x, lift) => [hip[0] + x - F * Math.cos(lift), ground - F * Math.sin(lift)];
+        const p = ((t + leg.offset) % 1 + 1) % 1;
+        const { from, to, toe, lift } = g.stance;
+        let heel, footAngle, flex = null;
+        if (p >= from && p <= to) { // appui : orteils plantés, talon qui se soulève
+          const k = (p - from) / (to - from);
+          footAngle = lerp(lift[0], lift[1], k * k);
+          heel = fromToe(lerp(toe[0], toe[1], k), footAngle);
+        } else { // envol : positions clés du talon, cheville pliée
+          const keys = g.swing, q = p < from ? p + 1 : p;
+          const [hx, hy, fl] = sample(keys.map(([kp, ...v]) => [(kp - keys[0][0]) / (keys[keys.length - 1][0] - keys[0][0]), ...v]), (q - keys[0][0]) / (keys[keys.length - 1][0] - keys[0][0]));
+          heel = [hip[0] + hx, ground + hy];
+          flex = fl;
+        }
+        // Mélange avec la pose debout quand le rat ralentit
+        const stand = fromToe(g.stand[0], 0);
+        heel = [lerp(stand[0], heel[0], amount), lerp(stand[1], heel[1], amount)];
+        const knee = ik(hip, heel, leg.a, leg.b, leg.dir);
+        if (flex !== null) {
+          const shin = Math.atan2(heel[1] - knee[1], heel[0] - knee[0]);
+          // près du contact au sol, le pied se remet à plat pour rejoindre l'appui sans à-coup
+          const q = p < from ? p + 1 : p, near = Math.min(Math.abs(q - to), Math.abs(from + 1 - q));
+          const k = Math.min(1, near / 0.07);
+          const toGround = Math.abs(q - to) < Math.abs(from + 1 - q) ? lift[1] : lift[0];
+          let free = shin + flex * Math.PI / 180;
+          while (free - toGround > Math.PI) free -= 2 * Math.PI;
+          while (free - toGround < -Math.PI) free += 2 * Math.PI;
+          free = Math.max(-0.25, Math.min(Math.PI - 0.15, free)); // les orteils ne pointent jamais vers le haut
+          footAngle = lerp(toGround, free, ease(k));
+        }
+        footAngle = lerp(0, footAngle, amount);
+        const [thigh, shinEl, paw] = legEls[i].children;
         thigh.setAttribute('d', `M${pt(hip)} L${pt(knee)}`);
         thigh.style.strokeWidth = leg.w[0];
-        shin.setAttribute('d', `M${pt(knee)} L${pt(ankle)}`);
-        shin.style.strokeWidth = leg.w[1];
-        paw.setAttribute('d', pawPath(ankle, fa, leg.paw, leg.w[2] / 2));
+        shinEl.setAttribute('d', `M${pt(knee)} L${pt(heel)}`);
+        shinEl.style.strokeWidth = leg.w[1];
+        paw.setAttribute('d', pawPath(heel, footAngle, F, leg.w[2] / 2));
       });
     }
 
