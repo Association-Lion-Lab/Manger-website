@@ -31,9 +31,9 @@
 
   const LEGS = [
     { hind: true, far: true, s: 0.33, drop: 8, a: 92, b: 86, paw: 86, w: [46, 26, 24], dir: 1, offset: 0.04, gait: 'hind', mass: [96, 80, 34, [-2.5, -1.9, -1.2, -0.5]] },
-    { hind: false, far: true, s: 0.82, drop: 10, a: 78, b: 66, paw: 44, w: [36, 19, 17], dir: -1, offset: 0.07, gait: 'front', mass: [62, 48, 26, [0.7, 1.3, 1.9, 2.5]], follow: 0.45 },
+    { hind: false, far: true, s: 0.8, drop: -2, a: 100, b: 70, paw: 44, w: [36, 19, 17], dir: -1, offset: 0.07, gait: 'front', mass: [82, 60, 38, [0.7, 1.3, 1.9, 2.5]] },
     { hind: true, far: false, s: 0.33, drop: 8, a: 92, b: 86, paw: 86, w: [46, 26, 24], dir: 1, offset: 0, gait: 'hind', mass: [96, 80, 34, [-2.5, -1.9, -1.2, -0.5]] },
-    { hind: false, far: false, s: 0.82, drop: 10, a: 78, b: 66, paw: 44, w: [36, 19, 17], dir: -1, offset: 0, gait: 'front', mass: [62, 48, 26, [0.7, 1.3, 1.9, 2.5]], follow: 0.45 }
+    { hind: false, far: false, s: 0.8, drop: -2, a: 100, b: 70, paw: 44, w: [36, 19, 17], dir: -1, offset: 0, gait: 'front', mass: [82, 60, 38, [0.7, 1.3, 1.9, 2.5]] }
   ];
 
   const lerp = (a, b, k) => a + (b - a) * k;
@@ -240,7 +240,7 @@
         // Masse musculaire (croupe et cuisse à l'arrière, épaule et poitrail à l'avant) :
         // accrochée près de la colonne, elle pivote avec l'os du haut de la patte
         const [rx, ry, cx, cut] = leg.mass;
-        // l'épaule suit le bras en partie seulement (l'omoplate bouge moins que la patte)
+        // l'omoplate bascule avec le bras depuis son sommet, comme la cuisse à l'arrière
         const bone = Math.atan2(knee[1] - hip[1], knee[0] - hip[0]);
         const fa = Math.PI / 2 + (bone - Math.PI / 2) * (leg.follow ?? 1), ca = Math.cos(fa), sa = Math.sin(fa);
         const E = (th, k = 1) => [hip[0] + (cx + rx * k * Math.cos(th)) * ca - ry * k * Math.sin(th) * sa, hip[1] + (cx + rx * k * Math.cos(th)) * sa + ry * k * Math.sin(th) * ca];
