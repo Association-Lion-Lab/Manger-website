@@ -25,8 +25,8 @@
       stand: [30, 0]
     }
   };
-  const ARCH = [[0, -0.25], [0.15, 0], [0.42, 1], [0.62, 0.6], [0.8, -0.15], [1, -0.25]];
-  const LIFT = [[0, -34], [0.15, -4], [0.42, 6], [0.62, 0], [0.8, -24], [1, -34]];
+  const ARCH = [[0, -0.4], [0.15, -0.05], [0.42, 1.15], [0.62, 0.65], [0.8, -0.25], [1, -0.4]];
+  const LIFT = [[0, -40], [0.15, -4], [0.42, 8], [0.62, 0], [0.8, -28], [1, -40]];
   const PITCH = [[0, -2], [0.2, 7], [0.45, 1], [0.7, -6], [0.9, -4], [1, -2]];
 
   const LEGS = [
@@ -71,9 +71,10 @@
   const BOTTOM = [[0, 13], [0.13, 36], [0.38, 58], [0.57, 62], [0.77, 58], [1, 42]];
   const profile = (table, s) => spline(table, s, false)[0];
 
-  function spinePoint(s, arch) {
-    const L = 570 * (1 - 0.12 * arch);
-    return [490 + (s - 0.5) * L, 420 - (18 + 58 * arch) * Math.sin(Math.PI * s) - 10 * s];
+  // wave : ondulation en S de la colonne (croupe et épaules décalées)
+  function spinePoint(s, arch, wave = 0) {
+    const L = 570 * (1 - 0.18 * arch);
+    return [490 + (s - 0.5) * L, 420 - (18 + 58 * arch) * Math.sin(Math.PI * s) - 10 * s - wave * 26 * Math.sin(2 * Math.PI * s)];
   }
 
   function smooth(points) {
@@ -145,13 +146,15 @@
 
     function render() {
       const arch = lerp(0.15, spline(ARCH, t)[0], amount);
+      const wave = Math.sin(2 * Math.PI * (t - 0.2)) * amount; // vague qui parcourt le dos
+      const squash = 1 + 0.1 * (arch - 0.15); // se tasse en se ramassant, s'affine en s'étirant
       const lift = spline(LIFT, t)[0] * amount;
       const pitch = spline(PITCH, t)[0] * amount * Math.PI / 180;
       const cos = Math.cos(pitch), sin = Math.sin(pitch);
       const world = ([x, y]) => [490 + (x - 490) * cos - (y - 420) * sin, 420 + lift + (x - 490) * sin + (y - 420) * cos];
       const frame = s => {
-        const p = world(spinePoint(s, arch));
-        const p2 = world(spinePoint(Math.min(1, s + 0.01), arch)), p1 = world(spinePoint(Math.max(0, s - 0.01), arch));
+        const p = world(spinePoint(s, arch, wave));
+        const p2 = world(spinePoint(Math.min(1, s + 0.01), arch, wave)), p1 = world(spinePoint(Math.max(0, s - 0.01), arch, wave));
         const len = Math.hypot(p2[0] - p1[0], p2[1] - p1[1]);
         const tg = [(p2[0] - p1[0]) / len, (p2[1] - p1[1]) / len];
         return { p, t: tg, n: [tg[1], -tg[0]] }; // n pointe vers le haut
@@ -162,8 +165,8 @@
       const N = 16, top = [], bottom = [];
       for (let i = 0; i <= N; i++) {
         const s = i / N, f = frame(s);
-        top.push(at(f, 0, profile(TOP, s)));
-        bottom.unshift(at(f, 0, -profile(BOTTOM, s)));
+        top.push(at(f, 0, profile(TOP, s) * squash));
+        bottom.unshift(at(f, 0, -profile(BOTTOM, s) * squash));
       }
       const neck = frame(1);
       body.setAttribute('d', smooth([...top, at(neck, 34, 6), ...bottom]));
@@ -178,7 +181,9 @@
 
 
       // Tête du logo, dans le prolongement du cou
-      const hp = at(neck, 4, -18), ang = Math.atan2(neck.t[1], neck.t[0]) * 180 / Math.PI + 20;
+      // la tête hoche avec un léger retard sur le corps
+      const nod = 9 * Math.sin(2 * Math.PI * (t - 0.12)) * amount;
+      const hp = at(neck, 4, -18), ang = Math.atan2(neck.t[1], neck.t[0]) * 180 / Math.PI + 20 + nod;
       head.setAttribute('transform', `translate(${pt(hp)}) rotate(${ang.toFixed(2)}) scale(.48) translate(-752 -602)`);
 
       // Queue : épaisse à la naissance, traîne derrière, ondule et finit en légère crosse
@@ -187,7 +192,8 @@
       let x = t0.p[0], y = t0.p[1];
       for (let j = 0; j <= 36; j++) {
         const u = j / 36;
-        const theta = baseAng + 0.1 + 1.2 * Math.pow(u, 3) + Math.sin(u * 4 - t * Math.PI * 2) * 0.22 * u * (0.4 + 0.6 * amount);
+        // fouet : la base suit le corps avec retard, l'onde se propage jusqu'à la pointe
+        const theta = baseAng + 0.1 + 1.2 * Math.pow(u, 3) + 0.22 * Math.sin(2 * Math.PI * (t - 0.25)) * amount + Math.sin(u * 5 - t * Math.PI * 2) * 0.38 * u * (0.3 + 0.7 * amount);
         if (j) { x += Math.cos(theta) * 13; y += Math.sin(theta) * 13; }
         const w = 22 * Math.pow(1 - u, 1.4) + 4, nx = -Math.sin(theta), ny = Math.cos(theta);
         tl.push([x + nx * w / 2, y + ny * w / 2]); tr.unshift([x - nx * w / 2, y - ny * w / 2]);
