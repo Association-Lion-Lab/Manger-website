@@ -505,6 +505,7 @@ body::before {
 .install__grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 60px; align-items: center; position: relative; }
 .checks { list-style: none; padding: 0; margin: 30px 0 0; display: grid; gap: 10px; }
 .checks li { padding-left: 32px; position: relative; }
+.checks a { color: #ffe0a8; text-underline-offset: 3px; }
 .checks li::before { content: "✓"; position: absolute; left: 0; top: .1em; width: 22px; height: 22px; border-radius: 50%; background: rgb(255 255 255 / .2); display: grid; place-items: center; font-size: .75rem; font-weight: 800; }
 .terminal { background: #161513; border-radius: 18px; box-shadow: 0 50px 100px -30px rgb(0 0 0 / .6); overflow: hidden; --d: 1; }
 .terminal__bar { display: flex; align-items: center; gap: 8px; padding: 14px 16px; background: #22211e; }

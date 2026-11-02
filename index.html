@@ -126,7 +126,7 @@
             <h3>Ce que fait Manger!</h3>
             <ul>
               <li>Une liste de courses <strong>neutre</strong>, à partager où vous voulez. Aucune enseigne, aucune commande.</li>
-              <li>Une base <strong>sur votre machine</strong>, SQLite ou PostgreSQL. Personne d'autre ne la lit.</li>
+              <li>Une base <strong>PostgreSQL sur votre machine</strong>. Personne d'autre ne la lit.</li>
               <li><strong>Gratuit et libre</strong>, sous licence AGPL. Pour toujours.</li>
               <li>Des suggestions <strong>explicables</strong>, avec des règles écrites noir sur blanc.</li>
               <li>Tout est <strong>exportable</strong> : recettes en JSON, semaine en ICS, sauvegarde complète du foyer.</li>
@@ -356,7 +356,7 @@
           <article class="tile reveal" style="--d:4">
             <span class="tile__icon">💾</span>
             <h3>Sauvegarde et restauration</h3>
-            <p>Sauvegarde du foyer en un fichier, restauration avec aperçu et copie de récupération. SQLite par défaut, PostgreSQL pour les installations plus costaudes.</p>
+            <p>Sauvegarde du foyer en un fichier, restauration avec aperçu et copie de récupération. Côté serveur, la base PostgreSQL peut se sauvegarder automatiquement chaque nuit.</p>
           </article>
           <article class="tile reveal" style="--d:5">
             <span class="tile__icon">🔒</span>
@@ -373,11 +373,12 @@
         <div>
           <p class="kicker kicker--light reveal">Installer</p>
           <h2 class="section__title reveal">Quatre lignes.<br><em>Et c'est à table.</em></h2>
-          <p class="section__lead reveal">Sur un serveur, un NAS ou simplement votre ordinateur, avec Docker Engine et Compose. Le service écoute sur le port 3000 ; le volume <code>manger-data</code> conserve vos données entre les mises à jour.</p>
+          <p class="section__lead reveal">Sur un serveur, un NAS ou simplement votre ordinateur, avec Docker Engine et Compose. Le service écoute sur le port 3000 ; vos données vivent dans une base PostgreSQL, sur vos propres volumes Docker.</p>
           <ul class="checks reveal">
             <li>Aucun mot de passe par défaut : la dernière commande crée le premier administrateur et affiche son mot de passe, à garder dans un gestionnaire.</li>
             <li>HTTPS local optionnel, à configurer explicitement.</li>
             <li>Mise à jour : sauvegardez d'abord, ne supprimez jamais les volumes.</li>
+            <li>Base PostgreSQL, secrets, certificats et sauvegardes automatiques : suivez le <a href="https://codeberg.org/LION_LAB/manger/src/branch/development/docs/POSTGRESQL-ADMIN.md" rel="noopener">guide d'administration</a>.</li>
           </ul>
           <p class="callout reveal"><strong>À garder sur un réseau de confiance.</strong> Manger! est fait pour le réseau local ou un VPN : ne l'exposez pas directement à Internet.</p>
         </div>
@@ -417,7 +418,7 @@
             <li class="is-done reveal"><span></span>Comptes, invitations, sauvegarde et restauration</li>
             <li class="is-done reveal"><span></span>Catalogue de recettes, placard anti-gaspi et saisons</li>
             <li class="is-done reveal"><span></span>Hors connexion, HTTPS local, parcours validé sur iPhone</li>
-            <li class="is-done reveal"><span></span>PostgreSQL mis en service sur un réseau local</li>
+            <li class="is-done reveal"><span></span>Passage à PostgreSQL, avec sauvegardes automatiques quotidiennes</li>
             <li class="is-next reveal"><span></span>Image Docker préconstruite publiée</li>
             <li class="is-later reveal"><span></span>Interfaces tablette et ordinateur, plusieurs foyers par instance</li>
             <li class="is-later reveal"><span></span>Intégration à Faim de Lion, la base communautaire de recettes</li>
@@ -473,7 +474,7 @@
           <div class="asso__badges" aria-hidden="true">
             <span class="badge badge--1">AGPL-3.0</span>
             <span class="badge badge--2">Node.js</span>
-            <span class="badge badge--3">SQLite</span>
+            <span class="badge badge--3">Auto-hébergé</span>
             <span class="badge badge--4">Docker</span>
             <span class="badge badge--5">PostgreSQL</span>
             <span class="badge badge--6">Recettes CC0</span>
