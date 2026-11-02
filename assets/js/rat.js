@@ -3,23 +3,23 @@
    le pied reste posé au sol pendant l'appui, puis se lève et revient. */
 (() => {
   const NS = 'http://www.w3.org/2000/svg';
-  const GROUND = 552;
+  const GROUND = 574;
 
   // Corps allongé, dans l'esprit du logo (croupe ronde, touffes de poils au poitrail)
-  const BODY = 'M146,394 C232,372 320,316 440,306 C560,296 660,318 740,346 C776,354 796,378 800,400 L812,418 L792,424 L802,442 L780,444 L782,460 C740,470 690,474 640,474 C590,474 540,480 500,484 C420,484 340,472 280,452 C230,438 190,414 146,408 Z';
-  const HAUNCH = 'M346,332 C406,354 438,410 416,464';
-  const SHOULDER = 'M652,330 C676,348 684,374 676,398';
+  const BODY = 'M150,392 C214,372 300,272 430,262 C560,252 670,286 740,322 C776,342 796,370 800,398 L812,418 L792,424 L802,442 L780,444 L782,462 C750,476 712,482 680,478 C640,474 600,474 560,486 C520,500 480,512 440,510 C370,506 300,470 250,440 C210,418 180,410 150,408 Z';
+  const HAUNCH = 'M336,298 C432,318 482,410 452,500';
+  const SHOULDER = 'M640,306 C672,332 684,370 674,410';
 
   // Pattes : longueurs en unités du logo
   const LEGS = [
-    { name: 'hind', far: true,  hip: [404, 438], a: 62, b: 80, phase: 0.5, knee: -1, paw: 82, w: [52, 21, 18] },
-    { name: 'front', far: true, hip: [702, 426], a: 58, b: 64, phase: 0.0, knee: 1, paw: 44, w: [34, 15, 14] },
-    { name: 'hind', far: false, hip: [404, 438], a: 62, b: 80, phase: 0.0, knee: -1, paw: 82, w: [52, 21, 18] },
-    { name: 'front', far: false, hip: [702, 426], a: 58, b: 64, phase: 0.5, knee: 1, paw: 44, w: [34, 15, 14] }
+    { name: 'hind', far: true,  hip: [424, 462], a: 58, b: 72, phase: 0.5, knee: -1, paw: 82, w: [52, 21, 18] },
+    { name: 'front', far: true, hip: [700, 436], a: 64, b: 68, phase: 0.0, knee: 1, paw: 44, w: [34, 15, 14] },
+    { name: 'hind', far: false, hip: [424, 462], a: 58, b: 72, phase: 0.0, knee: -1, paw: 82, w: [52, 21, 18] },
+    { name: 'front', far: false, hip: [700, 436], a: 64, b: 68, phase: 0.5, knee: 1, paw: 44, w: [34, 15, 14] }
   ];
 
-  const STRIDE = 150, LIFT = 38, DUTY = 0.55;
-  const VIEW = [-300, 130, 1500, 450];
+  const STRIDE = 165, LIFT = 44, DUTY = 0.55;
+  const VIEW = [-300, 130, 1500, 468];
 
   function foot(leg, t, amount) {
     // Position du pied relative à la hanche, dans le repère sol
