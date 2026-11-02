@@ -192,7 +192,7 @@ body::before {
 .is-in .scribble::after, .scribble.is-in::after { clip-path: inset(0 0 0 0); }
 
 .hero__lead { font-size: clamp(1.08rem, 1.6vw, 1.3rem); color: var(--muted); max-width: 34em; --d: 2; }
-.rotator { display: inline-block; position: relative; color: var(--text); font-weight: 700; min-width: 6.5ch; }
+.rotator { display: inline-block; position: relative; color: var(--text); font-weight: 700; }
 .rotator__word { display: inline-block; transition: transform .5s var(--ease), opacity .5s var(--ease); background: linear-gradient(90deg, var(--accent), var(--mustard)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .rotator__word.is-out { transform: translateY(-60%); opacity: 0; }
 .rotator__word.is-pre { transform: translateY(60%); opacity: 0; transition: none; }
@@ -642,25 +642,11 @@ body::before {
 .receipt__rat.is-jump > svg { animation: ratJump .6s var(--ease); }
 .receipt__rat .bubble { left: 0; }
 
-/* Le promeneur */
-.walker {
-  position: fixed; z-index: 55; left: 0; bottom: 10px;
-  width: 70px; height: 64px; padding: 0; border: 0; background: none; cursor: pointer;
-  color: var(--accent); transform: translateX(var(--x, -100px));
-  -webkit-tap-highlight-color: transparent;
-}
-.walker[hidden] { display: none; }
-.walker:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; border-radius: 12px; }
-.walker__body { position: absolute; inset: 0; transform-origin: 50% 100%; }
-.walker.is-left .walker__body { transform: scaleX(-1); }
-.walker__body .rat-svg { transform-origin: 50% 100%; }
-.walker.is-walking .walker__body .rat-svg { animation: ratStep .34s linear infinite; }
-.walker.is-running .walker__body .rat-svg { animation-duration: .2s; }
-.walker.is-sniffing .walker__body .rat-svg { animation: ratSniff 1.2s ease-in-out infinite; }
-.walker.is-jump .walker__body .rat-svg { animation: ratJump .6s var(--ease); }
-.walker__shadow { position: absolute; left: 18%; right: 18%; bottom: -4px; height: 8px; border-radius: 50%; background: rgb(0 0 0 / .14); filter: blur(2px); }
-.walker .bubble { z-index: 1; }
-@media (max-width: 600px) { .walker { width: 52px; height: 48px; } .receipt__rat { width: 46px; height: 43px; } }
+@media (max-width: 600px) { .receipt__rat { width: 46px; height: 43px; } }
+
+/* Vraie capture dans la maquette */
+.phone__screen--shot { padding: 0; background: #111113; display: block; }
+.phone__screen--shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {

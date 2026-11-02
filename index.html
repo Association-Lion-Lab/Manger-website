@@ -60,7 +60,7 @@
             On mange quoi<br>cette <span class="scribble">semaine</span>&nbsp;?
           </h1>
           <p class="hero__lead reveal">
-            Toutes vos
+            Vos
             <span class="rotator" aria-live="polite"><span class="rotator__word">recettes</span></span>
             dans un seul calendrier.
             <br>Chez vous. Sur votre serveur. Sans personne pour regarder dans votre assiette.
@@ -82,59 +82,12 @@
         <!-- Maquette du téléphone -->
         <div class="hero__visual reveal" aria-label="Aperçu de l'application : le planning de la semaine">
           <div class="phone" data-tilt>
-            <div class="phone__notch"></div>
-            <div class="phone__screen">
-              <div class="app-head">
-                <div>
-                  <p class="app-head__kicker">Semaine 44</p>
-                  <p class="app-head__title">Manger<em>!</em></p>
-                </div>
-                <img class="app-head__logo" src="assets/logo.svg" alt="" width="34" height="34">
-              </div>
-              <div class="app-days">
-                <span>L</span><span>M</span><span class="is-today">M</span><span>J</span><span>V</span><span>S</span><span>D</span>
-              </div>
-              <ol class="app-week">
-                <li class="meal meal--home" style="--i:0">
-                  <span class="meal__day">Lun.<br>soir</span>
-                  <span class="meal__body"><b>Curry coco</b><small>Maison · 35 min · 4 pers.</small></span>
-                  <span class="meal__tag">🍛</span>
-                </li>
-                <li class="meal meal--home" style="--i:1">
-                  <span class="meal__day">Mar.<br>midi</span>
-                  <span class="meal__body"><b>Restes de curry</b><small>2 portions · déjà acheté</small></span>
-                  <span class="meal__tag">♻️</span>
-                </li>
-                <li class="meal meal--out" style="--i:2">
-                  <span class="meal__day">Mer.<br>soir</span>
-                  <span class="meal__body"><b>Pizzeria du coin</b><small>Restaurant · 3 pers.</small></span>
-                  <span class="meal__tag">🍕</span>
-                </li>
-                <li class="meal meal--date" style="--i:3">
-                  <span class="meal__day">Jeu.<br>soir</span>
-                  <span class="meal__body"><b>Gnocchis aux légumes</b><small>Date ♥ · à la maison</small></span>
-                  <span class="meal__tag">🕯️</span>
-                </li>
-                <li class="meal meal--guests" style="--i:4">
-                  <span class="meal__day">Sam.<br>soir</span>
-                  <span class="meal__body"><b>Bowl partagé</b><small>Invités · 6 pers. · 3 régimes</small></span>
-                  <span class="meal__tag">🎉</span>
-                </li>
-              </ol>
-              <nav class="app-tabs" aria-hidden="true">
-                <span class="is-on"><i>📅</i>Semaine</span>
-                <span><i>📖</i>Recettes</span>
-                <span><i>🛒</i>Courses<b data-count-to="14">0</b></span>
-                <span><i>👤</i>Compte</span>
-              </nav>
+            <div class="phone__screen phone__screen--shot">
+              <img src="assets/screens/semaine.webp" alt="Capture de Manger! : la semaine du 2 au 8 novembre, avec deux repas prévus le lundi midi et soir et le bouton « Proposer le prochain repas »" width="967" height="2000">
             </div>
           </div>
           <div class="sticker sticker--a">Sans IA<br>générative</div>
           <div class="sticker sticker--b">Zéro<br>pub</div>
-          <div class="float-card float-card--a">
-            <span class="float-card__icon">✓</span>
-            <span><b>Tomates ×5</b><small>regroupées depuis 2 recettes</small></span>
-          </div>
         </div>
       </div>
     </section>
@@ -538,12 +491,6 @@
       <p class="footer__small">Ce site n'utilise ni cookie, ni traceur, ni police ou script tiers. Évidemment.</p>
     </div>
   </footer>
-
-  <button class="walker" id="walker" type="button" aria-label="Le rat de Manger! se promène : cliquez pour le saluer" hidden>
-    <span class="walker__body"><svg class="rat-svg"><use href="#rat"/></svg></span>
-    <span class="walker__shadow"></span>
-    <span class="bubble"></span>
-  </button>
 
   <script src="assets/js/main.js" defer></script>
 </body>
