@@ -3,23 +3,23 @@
    le pied reste posé au sol pendant l'appui, puis se lève et revient. */
 (() => {
   const NS = 'http://www.w3.org/2000/svg';
-  const GROUND = 612;
+  const GROUND = 552;
 
   // Corps allongé, dans l'esprit du logo (croupe ronde, touffes de poils au poitrail)
-  const BODY = 'M196,384 C246,350 316,262 430,248 C548,234 652,272 730,318 C772,344 794,372 800,400 L812,420 L792,426 L804,446 L780,448 L784,466 C740,478 690,484 640,484 C600,484 560,494 520,500 C440,512 360,502 304,476 C262,456 232,432 196,422 Z';
-  const HAUNCH = 'M330,288 C404,318 444,398 414,480';
-  const SHOULDER = 'M640,300 C670,326 680,362 672,396';
+  const BODY = 'M146,394 C232,372 320,316 440,306 C560,296 660,318 740,346 C776,354 796,378 800,400 L812,418 L792,424 L802,442 L780,444 L782,460 C740,470 690,474 640,474 C590,474 540,480 500,484 C420,484 340,472 280,452 C230,438 190,414 146,408 Z';
+  const HAUNCH = 'M346,332 C406,354 438,410 416,464';
+  const SHOULDER = 'M652,330 C676,348 684,374 676,398';
 
   // Pattes : longueurs en unités du logo
   const LEGS = [
-    { name: 'hind', far: true,  hip: [404, 452], a: 98, b: 106, phase: 0.5, knee: -1, paw: 98, w: [42, 22, 20] },
-    { name: 'front', far: true, hip: [704, 440], a: 88, b: 92, phase: 0.0, knee: 1, paw: 50, w: [34, 17, 16] },
-    { name: 'hind', far: false, hip: [404, 452], a: 98, b: 106, phase: 0.0, knee: -1, paw: 98, w: [42, 22, 20] },
-    { name: 'front', far: false, hip: [704, 440], a: 88, b: 92, phase: 0.5, knee: 1, paw: 50, w: [34, 17, 16] }
+    { name: 'hind', far: true,  hip: [404, 438], a: 62, b: 80, phase: 0.5, knee: -1, paw: 82, w: [52, 21, 18] },
+    { name: 'front', far: true, hip: [702, 426], a: 58, b: 64, phase: 0.0, knee: 1, paw: 44, w: [34, 15, 14] },
+    { name: 'hind', far: false, hip: [404, 438], a: 62, b: 80, phase: 0.0, knee: -1, paw: 82, w: [52, 21, 18] },
+    { name: 'front', far: false, hip: [702, 426], a: 58, b: 64, phase: 0.5, knee: 1, paw: 44, w: [34, 15, 14] }
   ];
 
-  const STRIDE = 200, LIFT = 56, DUTY = 0.55;
-  const VIEW = [-300, 118, 1500, 552];
+  const STRIDE = 150, LIFT = 38, DUTY = 0.55;
+  const VIEW = [-300, 130, 1500, 450];
 
   function foot(leg, t, amount) {
     // Position du pied relative à la hanche, dans le repère sol
@@ -76,7 +76,7 @@
         <path d="${BODY}"/>
         <path class="rr-cut" d="${HAUNCH}"/>
         <path class="rr-cut" d="${SHOULDER}"/>
-        <g class="rr-head" transform="translate(798 434) rotate(24) scale(.48) translate(-752 -602)">
+        <g class="rr-head" transform="translate(798 428) rotate(22) scale(.48) translate(-752 -602)">
           <use href="#rb-body" clip-path="url(#rc-head)"/><use href="#rb-face"/>
         </g>
       </g>
@@ -95,13 +95,13 @@
     const period = opts.period || 0.42;
 
     function render() {
-      const lift = -Math.abs(Math.sin(t * Math.PI * 2)) * 18 * amount; // deux rebonds par cycle au trot
+      const lift = -Math.abs(Math.sin(t * Math.PI * 2)) * 10 * amount; // deux rebonds par cycle au trot
       const pitch = Math.sin(t * Math.PI * 4) * 1.6 * amount;
       bob.setAttribute('transform', `translate(0 ${lift.toFixed(1)}) rotate(${pitch.toFixed(2)} 520 420)`);
       LEGS.forEach((leg, i) => {
         const [fx, fy] = foot(leg, t, amount);
         const hip = [leg.hip[0], leg.hip[1] + lift];
-        const ankle = [leg.hip[0] + fx + (leg.name === 'hind' ? -40 : 0), GROUND - (leg.name === 'hind' ? 26 : 18) + fy];
+        const ankle = [leg.hip[0] + fx + (leg.name === 'hind' ? -30 : 4), GROUND - (leg.name === 'hind' ? 20 : 14) + fy];
         const knee = ik(hip, ankle, leg.a, leg.b, leg.knee);
         const [thigh, shin, paw] = legEls[i].children;
         thigh.setAttribute('d', `M${pts([hip])} L${pts([knee])}`);
@@ -112,7 +112,7 @@
         paw.setAttribute('d', pawPath(ankle, tilt, leg.paw, leg.w[2] / 2));
       });
       // Queue : part de la croupe, traîne derrière, ondule, et finit en crosse comme sur le logo
-      const n = 40, L = 560, base = [204, 404 + lift];
+      const n = 40, L = 560, base = [152, 401 + lift];
       const top = [], bottom = [];
       let x = base[0], y = base[1];
       for (let j = 0; j <= n; j++) {
@@ -120,7 +120,7 @@
         const wave = Math.sin(u * 4 - t * Math.PI * 2) * 0.32 * u * (0.35 + 0.65 * amount);
         const theta = Math.PI + 0.08 + 1.35 * Math.pow(u, 3) + wave - (1 - amount) * 0.25 * u;
         if (j) { x += Math.cos(theta) * L / n; y += Math.sin(theta) * L / n; }
-        const w = 32 * Math.pow(1 - u, 1.6) + 4;
+        const w = 20 * Math.pow(1 - u, 1.4) + 4;
         const nx = -Math.sin(theta), ny = Math.cos(theta);
         top.push([x + nx * w / 2, y + ny * w / 2]); bottom.unshift([x - nx * w / 2, y - ny * w / 2]);
       }
