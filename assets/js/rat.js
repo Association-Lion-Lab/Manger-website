@@ -30,10 +30,10 @@
   const PITCH = [[0, -2], [0.2, 7], [0.45, 1], [0.7, -6], [0.9, -4], [1, -2]];
 
   const LEGS = [
-    { hind: true, far: true, s: 0.33, drop: 8, a: 92, b: 86, paw: 86, w: [46, 26, 24], dir: 1, offset: 0.04, gait: 'hind' },
-    { hind: false, far: true, s: 0.8, drop: 28, a: 62, b: 66, paw: 44, w: [36, 19, 17], dir: -1, offset: 0.07, gait: 'front' },
-    { hind: true, far: false, s: 0.33, drop: 8, a: 92, b: 86, paw: 86, w: [46, 26, 24], dir: 1, offset: 0, gait: 'hind' },
-    { hind: false, far: false, s: 0.8, drop: 28, a: 62, b: 66, paw: 44, w: [36, 19, 17], dir: -1, offset: 0, gait: 'front' }
+    { hind: true, far: true, s: 0.33, drop: 8, a: 92, b: 86, paw: 86, w: [46, 26, 24], dir: 1, offset: 0.04, gait: 'hind', mass: [96, 80, 34, [-2.5, -1.9, -1.2, -0.5]] },
+    { hind: false, far: true, s: 0.76, drop: 6, a: 80, b: 66, paw: 44, w: [36, 19, 17], dir: -1, offset: 0.07, gait: 'front', mass: [66, 50, 26, [0.7, 1.3, 1.9, 2.5]] },
+    { hind: true, far: false, s: 0.33, drop: 8, a: 92, b: 86, paw: 86, w: [46, 26, 24], dir: 1, offset: 0, gait: 'hind', mass: [96, 80, 34, [-2.5, -1.9, -1.2, -0.5]] },
+    { hind: false, far: false, s: 0.76, drop: 6, a: 80, b: 66, paw: 44, w: [36, 19, 17], dir: -1, offset: 0, gait: 'front', mass: [66, 50, 26, [0.7, 1.3, 1.9, 2.5]] }
   ];
 
   const lerp = (a, b, k) => a + (b - a) * k;
@@ -51,7 +51,7 @@
 
   // Épaisseur du corps le long de la colonne (0 = naissance de la queue, 1 = cou)
   const TOP = [[0, 13], [0.14, 44], [0.36, 76], [0.75, 66], [1, 46]];
-  const BOTTOM = [[0, 13], [0.13, 36], [0.38, 58], [0.57, 66], [0.77, 74], [1, 44]];
+  const BOTTOM = [[0, 13], [0.13, 36], [0.38, 58], [0.57, 62], [0.77, 58], [1, 42]];
   const profile = (table, s) => sample(table.map(([p, v]) => [p, v]), Math.min(s, 0.9999))[0];
 
   function spinePoint(s, arch) {
@@ -110,16 +110,15 @@
       <path class="rr-tail"/>
       <path class="rr-body"/>
       <path class="rr-tufts"/>
-      <path class="rr-cut rr-shoulder"/>
       <g class="rr-head"><use href="#rb-body" clip-path="url(#rc-head)"/><use href="#rb-face"/></g>
       <g class="rr-near"></g>`;
     container.replaceChildren(svg);
     const q = sel => svg.querySelector(sel);
     const body = q('.rr-body'), tufts = q('.rr-tufts'), tail = q('.rr-tail');
-    const shoulder = q('.rr-shoulder'), head = q('.rr-head');
+    const head = q('.rr-head');
     const legEls = LEGS.map(leg => {
       const g = document.createElementNS(NS, 'g');
-      g.innerHTML = leg.hind ? '<path/><path/><path/><path/><path class="rr-cut"/>' : '<path/><path/><path/>';
+      g.innerHTML = '<path/><path/><path/><path/><path class="rr-cut"/>';
       q(leg.far ? '.rr-far' : '.rr-near').append(g);
       return g;
     });
@@ -160,9 +159,6 @@
       });
       tufts.setAttribute('d', d);
 
-      // Ligne de l'épaule
-      const sh = frame(0.76);
-      shoulder.setAttribute('d', `M${pt(at(sh, -24, 44))} C${pt(at(sh, 20, 30))} ${pt(at(sh, 26, -6))} ${pt(at(sh, 14, -46))}`);
 
       // Tête du logo, dans le prolongement du cou
       const hp = at(neck, 4, -18), ang = Math.atan2(neck.t[1], neck.t[0]) * 180 / Math.PI + 20;
@@ -220,16 +216,16 @@
         thigh.setAttribute('d', limb(hip, knee, leg.w[0] / 2, leg.w[1] / 2));
         shinEl.setAttribute('d', limb(knee, heel, leg.w[1] / 2, leg.w[2] / 2));
         paw.setAttribute('d', pawPath(heel, footAngle, F, leg.w[2] / 2));
-        if (leg.hind) {
-          // Croupe et cuisse : une seule masse accrochée à la hanche, qui pivote avec le fémur
-          const fa = Math.atan2(knee[1] - hip[1], knee[0] - hip[0]), ca = Math.cos(fa), sa = Math.sin(fa);
-          const E = (th, rx = 96, ry = 80, cx = 34) => [hip[0] + (cx + rx * Math.cos(th)) * ca - ry * Math.sin(th) * sa, hip[1] + (cx + rx * Math.cos(th)) * sa + ry * Math.sin(th) * ca];
-          const ring = [];
-          for (let j = 0; j < 18; j++) ring.push(E(j / 18 * Math.PI * 2));
-          haunchEl.setAttribute('d', smooth(ring));
-          const arc = [-2.5, -1.9, -1.2, -0.5].map(th => E(th, 82, 66, 34));
-          haunchCut.setAttribute('d', `M${pt(arc[0])} C${pt(arc[1])} ${pt(arc[2])} ${pt(arc[3])}`);
-        }
+        // Masse musculaire (croupe et cuisse à l'arrière, épaule et poitrail à l'avant) :
+        // accrochée près de la colonne, elle pivote avec l'os du haut de la patte
+        const [rx, ry, cx, cut] = leg.mass;
+        const fa = Math.atan2(knee[1] - hip[1], knee[0] - hip[0]), ca = Math.cos(fa), sa = Math.sin(fa);
+        const E = (th, k = 1) => [hip[0] + (cx + rx * k * Math.cos(th)) * ca - ry * k * Math.sin(th) * sa, hip[1] + (cx + rx * k * Math.cos(th)) * sa + ry * k * Math.sin(th) * ca];
+        const ring = [];
+        for (let j = 0; j < 18; j++) ring.push(E(j / 18 * Math.PI * 2));
+        haunchEl.setAttribute('d', smooth(ring));
+        const arc = cut.map(th => E(th, 0.84));
+        haunchCut.setAttribute('d', `M${pt(arc[0])} C${pt(arc[1])} ${pt(arc[2])} ${pt(arc[3])}`);
       });
     }
 
