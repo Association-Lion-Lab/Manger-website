@@ -29,7 +29,7 @@ docker run -d --name manger-site -p 8080:80 -v "$PWD":/usr/share/nginx/html:ro n
 ```
 index.html           page unique
 assets/css/style.css styles et animations
-assets/js/main.js    interactions (démos courses et foyer, scrollytelling, terminal)
+assets/js/main.js    interactions (démos, scrollytelling, terminal, rat promeneur)
 assets/fonts/        Fraunces et Inter (SIL Open Font License 1.1)
 assets/logo.svg      logo (rat cuisinier, repris de l'application)
 ```

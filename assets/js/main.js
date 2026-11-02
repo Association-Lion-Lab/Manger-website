@@ -3,16 +3,26 @@
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
-  /* ---------- Nav : fond au scroll, masquée en descendant ---------- */
+  /* ---------- Nav : fond au scroll, rat qui suit la lecture ---------- */
   const nav = $('#nav');
+  const progress = $('.progress');
   let lastY = scrollY;
-  addEventListener('scroll', () => {
+  let stopTimer;
+  const onScroll = () => {
     const y = scrollY;
+    const max = document.documentElement.scrollHeight - innerHeight;
     nav.classList.toggle('is-scrolled', y > 20);
-    nav.classList.toggle('is-hidden', y > 400 && y > lastY + 4);
-    if (y < lastY - 4 || y < 400) nav.classList.remove('is-hidden');
+    progress.style.setProperty('--p', max > 0 ? Math.min(y / max, 1).toFixed(4) : 0);
+    if (y !== lastY) {
+      progress.classList.toggle('is-back', y < lastY);
+      progress.classList.add('is-moving');
+      clearTimeout(stopTimer);
+      stopTimer = setTimeout(() => progress.classList.remove('is-moving'), 160);
+    }
     lastY = y;
-  }, { passive: true });
+  };
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 
   // Lien actif selon la section visible
   const navLinks = $$('.nav__links a');
@@ -157,11 +167,28 @@
       });
       listRoot.append(item);
     });
+    if (previous.size || totals.size) ratReact(totals.size - previous.size);
     previous = new Map([...totals].map(([name, entry]) => [name, entry.amount]));
     countElement.textContent = totals.size;
     emptyHint.hidden = totals.size > 0;
   }
+  /* ---------- Le rat perché sur le ticket ---------- */
+  const receiptRat = $('#receipt-rat');
+  let receiptTimer;
+  function ratReact(delta) {
+    if (!receiptRat || !document.body.dataset.ready) return;
+    const bubble = $('.bubble', receiptRat);
+    bubble.textContent = delta > 0 ? `+${delta} sur la liste !` : delta < 0 ? 'Un plat de moins…' : 'Quantités mises à jour';
+    receiptRat.classList.remove('is-jump');
+    void receiptRat.offsetWidth;
+    receiptRat.classList.add('is-jump');
+    bubble.classList.add('is-on');
+    clearTimeout(receiptTimer);
+    receiptTimer = setTimeout(() => bubble.classList.remove('is-on'), 1600);
+  }
+
   renderList();
+  document.body.dataset.ready = '1';
 
   const flash = (button, label) => {
     const original = button.textContent;
@@ -282,5 +309,93 @@
       term.innerHTML = `${finalHTML}\n<span class="caret"></span>`;
     }, { threshold: .5 });
     typeObserver.observe(term);
+  }
+
+  /* ---------- Le rat qui se promène en bas de l'écran ---------- */
+  const walker = $('#walker');
+  if (walker && !reduceMotion) {
+    const lines = ['On mange quoi ?', 'Miam !', 'Tu as pensé aux courses ?', 'Un petit curry ce soir ?', 'Rien ne se perd au placard !', 'Oh, du fromage ?', 'Chef, oui chef !', 'Restes de lundi = dîner de mardi', 'Zéro pub, promis.'];
+    const bubble = $('.bubble', walker);
+    const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+    let x = -100;
+    let running = false;
+    let busy = false;
+    let lineIndex = Math.floor(Math.random() * lines.length);
+
+    let sayId = 0;
+    const say = async (text, ms = 1800) => {
+      const id = ++sayId;
+      bubble.textContent = text;
+      bubble.classList.add('is-on');
+      await wait(ms);
+      if (id === sayId) bubble.classList.remove('is-on');
+    };
+    const nextLine = () => lines[lineIndex++ % lines.length];
+    const place = () => walker.style.setProperty('--x', `${x}px`);
+
+    const walkTo = target => new Promise(resolve => {
+      walker.classList.toggle('is-left', target < x);
+      walker.classList.add('is-walking');
+      let last = performance.now();
+      const step = now => {
+        const speed = running ? 320 : 95;
+        const dt = Math.min((now - last) / 1000, .05);
+        last = now;
+        const direction = Math.sign(target - x);
+        x += direction * speed * dt;
+        if (Math.sign(target - x) !== direction) x = target;
+        place();
+        if (x === target) { walker.classList.remove('is-walking'); resolve(); }
+        else requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    });
+
+    async function promenade() {
+      if (busy || document.hidden) return;
+      busy = true;
+      running = false;
+      const width = innerWidth;
+      const size = walker.offsetWidth || 70;
+      const fromLeft = Math.random() < .5;
+      x = fromLeft ? -size - 20 : width + 20;
+      place();
+      walker.hidden = false;
+      walker.classList.remove('is-running');
+      const stops = Math.random() < .5 ? 1 : 2;
+      for (let i = 0; i < stops && !running; i++) {
+        const zone = (i + 1) / (stops + 1);
+        const target = Math.round((fromLeft ? zone : 1 - zone) * (width - size) + (Math.random() - .5) * 80);
+        await walkTo(Math.max(10, Math.min(width - size - 10, target)));
+        if (running) break;
+        walker.classList.add('is-sniffing');
+        if (Math.random() < .7) await say(nextLine());
+        else await wait(1400);
+        walker.classList.remove('is-sniffing');
+      }
+      await walkTo(fromLeft ? width + 20 : -size - 20);
+      walker.hidden = true;
+      walker.classList.remove('is-running');
+      busy = false;
+    }
+
+    walker.addEventListener('click', async () => {
+      if (running) return;
+      walker.classList.add('is-jump');
+      say(['Coucou !', 'Hé, ça chatouille !', 'Je file en cuisine !'][Math.floor(Math.random() * 3)], 1200);
+      await wait(600);
+      walker.classList.remove('is-jump');
+      running = true;
+      walker.classList.add('is-running');
+    });
+
+    // Première balade une fois le hero dépassé, puis de temps en temps
+    let started = false;
+    addEventListener('scroll', () => {
+      if (started || scrollY < innerHeight * .8) return;
+      started = true;
+      setTimeout(promenade, 1500);
+      setInterval(promenade, 32000);
+    }, { passive: true });
   }
 })();

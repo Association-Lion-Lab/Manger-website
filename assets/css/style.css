@@ -154,7 +154,6 @@ body::before {
   -webkit-backdrop-filter: blur(14px) saturate(1.4);
   box-shadow: 0 1px 0 var(--line);
 }
-.nav.is-hidden { transform: translateY(-100%); }
 .nav__inner { width: min(1180px, 100% - 32px); margin-inline: auto; display: flex; align-items: center; gap: 24px; height: 68px; }
 .logo img { border-radius: 9px; }
 .logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font: 700 1.35rem/1 var(--serif); letter-spacing: -.02em; }
@@ -601,10 +600,73 @@ body::before {
 .timeline .is-later { color: var(--muted); }
 .timeline .is-later span { border-style: dashed; }
 
+/* ===== Le rat ===== */
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.rat-svg { display: block; width: 100%; height: 100%; overflow: visible; }
+@keyframes ratStep { 0%, 100% { transform: translateY(0) rotate(0); } 25% { transform: translateY(-14%) rotate(-4deg); } 50% { transform: translateY(0) rotate(0); } 75% { transform: translateY(-9%) rotate(3deg); } }
+@keyframes ratSniff { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-6deg) translateY(-3%); } 40% { transform: rotate(-2deg); } 60% { transform: rotate(-7deg) translateY(-4%); } 80% { transform: rotate(-1deg); } }
+@keyframes ratJump { 0%, 100% { transform: translateY(0) scale(1, 1); } 15% { transform: translateY(0) scale(1.1, .85); } 45% { transform: translateY(-60%) scale(.95, 1.08) rotate(-8deg); } 75% { transform: translateY(0) scale(1.08, .9); } }
+
+/* Bulle */
+.bubble {
+  position: absolute; bottom: 100%; left: 50%; translate: -50% -6px;
+  background: var(--raised); color: var(--text); border: 1px solid var(--line);
+  font: 600 .82rem/1.2 var(--sans); white-space: nowrap;
+  padding: .5em .8em; border-radius: 12px; box-shadow: var(--shadow);
+  opacity: 0; transform: translateY(6px) scale(.9); transform-origin: bottom center;
+  transition: opacity .25s var(--ease), transform .35s var(--ease);
+  pointer-events: none;
+}
+.bubble::after { content: ""; position: absolute; top: 100%; left: 50%; translate: -50% -5px; width: 10px; height: 10px; background: inherit; border: inherit; border-width: 0 1px 1px 0; rotate: 45deg; }
+.bubble.is-on { opacity: 1; transform: none; }
+
+/* Progression : le rat suit la lecture */
+.progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; opacity: 0; transition: opacity .3s; pointer-events: none; }
+.nav.is-scrolled .progress { opacity: 1; }
+.progress__bar { position: absolute; inset: 0; transform-origin: left; transform: scaleX(var(--p, 0)); background: linear-gradient(90deg, var(--accent), var(--mustard)); }
+.progress__rat { position: absolute; bottom: 1px; left: calc(var(--p, 0) * (100% - 30px)); width: 30px; height: 28px; color: var(--accent); }
+.progress__rat .rat-svg { transform-origin: 50% 100%; }
+.progress.is-moving .progress__rat .rat-svg { animation: ratStep .32s linear infinite; }
+.progress.is-back .progress__rat { transform: scaleX(-1); }
+
+/* Bandeau : traversée régulière */
+.marquee { position: relative; }
+.marquee__rat { position: absolute; z-index: 1; bottom: 2px; left: 0; width: 46px; height: 42px; color: var(--mustard); animation: marqueeRat 22s linear infinite; }
+.marquee__rat .rat-svg { animation: ratStep .3s linear infinite; transform-origin: 50% 100%; }
+@keyframes marqueeRat { 0% { transform: translateX(-80px); } 30% { transform: translateX(calc(100vw + 40px)); } 100% { transform: translateX(calc(100vw + 40px)); } }
+
+/* Ticket de caisse : le rat perché */
+.receipt__rat { position: absolute; right: 22px; bottom: calc(100% - 4px); width: 58px; height: 54px; color: var(--accent); }
+.receipt__rat .rat-svg { transform-origin: 50% 100%; transform: scaleX(-1); }
+.receipt__rat > svg { animation: ratSniff 4s ease-in-out infinite; }
+.receipt__rat.is-jump > svg { animation: ratJump .6s var(--ease); }
+.receipt__rat .bubble { left: 0; }
+
+/* Le promeneur */
+.walker {
+  position: fixed; z-index: 55; left: 0; bottom: 10px;
+  width: 70px; height: 64px; padding: 0; border: 0; background: none; cursor: pointer;
+  color: var(--accent); transform: translateX(var(--x, -100px));
+  -webkit-tap-highlight-color: transparent;
+}
+.walker[hidden] { display: none; }
+.walker:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; border-radius: 12px; }
+.walker__body { position: absolute; inset: 0; transform-origin: 50% 100%; }
+.walker.is-left .walker__body { transform: scaleX(-1); }
+.walker__body .rat-svg { transform-origin: 50% 100%; }
+.walker.is-walking .walker__body .rat-svg { animation: ratStep .34s linear infinite; }
+.walker.is-running .walker__body .rat-svg { animation-duration: .2s; }
+.walker.is-sniffing .walker__body .rat-svg { animation: ratSniff 1.2s ease-in-out infinite; }
+.walker.is-jump .walker__body .rat-svg { animation: ratJump .6s var(--ease); }
+.walker__shadow { position: absolute; left: 18%; right: 18%; bottom: -4px; height: 8px; border-radius: 50%; background: rgb(0 0 0 / .14); filter: blur(2px); }
+.walker .bubble { z-index: 1; }
+@media (max-width: 600px) { .walker { width: 52px; height: 48px; } .receipt__rat { width: 46px; height: 43px; } }
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; transition-delay: 0s !important; }
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; }
   .marquee__track { animation: none; }
+  .marquee__rat { display: none; }
 }
